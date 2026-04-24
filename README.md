@@ -4,6 +4,8 @@
 
 O ThermoCalc é um motor de processamento termodinâmico desenhado para eliminar erros em cascata em projetos de ciclos térmicos, automatizando a interpolação e o rastreamento de estados físicos.
 
+**Visualização** [https://aad-systems.github.io/thermolab/](https://aad-systems.github.io/thermolab/)
+
 ## 🚀 Funcionalidades do MVP
 - **Fast-Input Grid:** Interface otimizada para digitação rápida de limites de tabelas (Moran/Shapiro).
 - **Smart Interpolator:** Interpolação linear e dupla automática, com exibição da fórmula deduzida.
