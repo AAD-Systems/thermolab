@@ -1,6 +1,8 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/AAD-Systems/thermolab/banner.png" width="100%" alt="Arvexa ThermoCalc Banner">
-  
+  <a href="https://aad-systems.github.io/thermolab/">
+    <img src="banner.png" width="100%" alt="Arvexa ThermoCalc Banner" style="border-radius: 8px;">
+  </a>
+
   <br />
 
   # 🔵 Arvexa ThermoCalc (v0.1.0-alpha)
@@ -13,7 +15,7 @@
   
   *O ThermoCalc é um motor de processamento termodinâmico desenhado para eliminar erros em cascata em projetos de ciclos térmicos, automatizando a interpolação e o rastreamento de estados físicos.*
 
-  **[Acessar Aplicação Web](https://aad-systems.github.io/thermolab/)**
+  **[🚀 Acessar Aplicação Web](https://aad-systems.github.io/thermolab/)**
 </div>
 
 ---
@@ -36,3 +38,8 @@
 * [x] **Motor Matemático e Rastreamento de Estados** (Concluído)
 * [ ] **Fase 2:** Módulo de Visão Computacional (OCR) para extração de dados direto das tabelas físicas.
 * [ ] **Fase 3:** Integração com bibliotecas CoolProp/Numpy.
+
+---
+<div align="center">
+  <sub>Desenvolvido por <b>Tauã Miguel</b> para a Arvexa Technologies.</sub>
+</div>
