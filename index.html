@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ThermoLab | Arvexa Technologies</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:       #080c14;
+      --surface:  #0d1525;
+      --card:     #111a2e;
+      --border:   #1e2d4a;
+      --accent:   #3b82f6;
+      --accent2:  #06b6d4;
+      --green:    #10b981;
+      --red:      #ef4444;
+      --amber:    #f59e0b;
+      --text:     #e2e8f0;
+      --muted:    #64748b;
+      --mono:     'JetBrains Mono', monospace;
+      --display:  'Syne', sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--mono);
+      font-size: 13px;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Background grid */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 40px 40px;
+      opacity: 0.25;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .wrapper {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 20px 16px 40px;
+    }
+
+    /* ── HEADER ── */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 28px;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .logo-block {}
+    .logo {
+      font-family: var(--display);
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--accent);
+      letter-spacing: -0.5px;
+    }
+    .logo span { color: var(--accent2); }
+    .logo-badge {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 9px;
+      font-weight: 400;
+      background: #1e2d4a;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 1px 6px;
+      margin-left: 8px;
+      vertical-align: middle;
+      letter-spacing: 1px;
+    }
+    .logo-sub {
+      font-size: 10px;
+      color: var(--muted);
+      margin-top: 3px;
+      letter-spacing: 0.5px;
+    }
+
+    .header-right {
+      text-align: right;
+    }
+    #clock {
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 1px;
+    }
+    .state-counter {
+      font-size: 10px;
+      color: var(--accent2);
+      margin-top: 4px;
+    }
+
+    /* ── TABS ── */
+    .tabs {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 4px;
+    }
+    .tab-btn {
+      flex: 1;
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      padding: 8px 6px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-transform: uppercase;
+    }
+    .tab-btn.active {
+      background: var(--accent);
+      color: #fff;
+    }
+    .tab-btn:not(.active):hover {
+      background: var(--border);
+      color: var(--text);
+    }
+
+    /* ── LAYOUT ── */
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    @media (max-width: 700px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+
+    /* ── PANEL ── */
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+    }
+    .panel-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--display);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      margin-bottom: 18px;
+      text-transform: uppercase;
+      color: var(--text);
+    }
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .dot-blue { background: var(--accent); box-shadow: 0 0 6px var(--accent); }
+    .dot-green { background: var(--green); box-shadow: 0 0 6px var(--green); }
+    .dot-cyan { background: var(--accent2); box-shadow: 0 0 6px var(--accent2); }
+
+    /* ── FORM ── */
+    .field-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .field-group.full { grid-template-columns: 1fr; }
+    .field-group.triple { grid-template-columns: 1fr 1fr 1fr; }
+
+    label {
+      display: block;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      color: var(--muted);
+      margin-bottom: 5px;
+      text-transform: uppercase;
+    }
+    label.highlight { color: var(--accent); }
+    label.cyan { color: var(--accent2); }
+
+    input[type="number"], input[type="text"], select {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      color: var(--text);
+      font-family: var(--mono);
+      font-size: 13px;
+      padding: 8px 10px;
+      outline: none;
+      transition: border-color 0.15s;
+      -moz-appearance: textfield;
+    }
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button { -webkit-appearance: none; }
+    input:focus, select:focus { border-color: var(--accent); }
+    input.target { border-color: #2563eb; background: #0d1a33; }
+    input.target:focus { border-color: var(--accent); }
+    select { cursor: pointer; }
+
+    .divider-label {
+      font-size: 9px;
+      color: var(--muted);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      text-align: center;
+      border-top: 1px solid var(--border);
+      padding-top: 12px;
+      margin: 12px 0 10px;
+    }
+
+    /* ── BUTTONS ── */
+    .btn {
+      width: 100%;
+      border: none;
+      border-radius: 6px;
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 12px;
+      cursor: pointer;
+      transition: all 0.15s;
+      margin-top: 14px;
+    }
+    .btn:active { transform: scale(0.97); }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { background: #2563eb; }
+    .btn-secondary { background: var(--surface); border: 1px solid var(--border); color: var(--text); }
+    .btn-secondary:hover { background: var(--border); }
+    .btn-danger { background: transparent; border: 1px solid var(--red); color: var(--red); font-size: 10px; padding: 6px; margin-top: 8px; }
+    .btn-danger:hover { background: rgba(239,68,68,0.1); }
+    .btn-sm {
+      display: inline-block;
+      width: auto;
+      margin-top: 0;
+      font-size: 9px;
+      padding: 5px 10px;
+      letter-spacing: 1px;
+    }
+
+    /* ── RESULT BOX ── */
+    .result-box {
+      display: none;
+      margin-top: 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .result-box.visible { display: block; }
+    .result-box.error { border-color: var(--red); }
+    .result-box.success { border-color: #1d4ed8; }
+
+    .result-label {
+      font-size: 9px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .result-value {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--green);
+      font-family: var(--mono);
+      letter-spacing: -1px;
+      margin-bottom: 2px;
+    }
+    .result-value.error { color: var(--red); font-size: 14px; }
+    .result-unit {
+      font-size: 10px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .result-formula {
+      font-size: 10px;
+      color: #475569;
+      font-family: var(--mono);
+      line-height: 1.5;
+      border-top: 1px solid var(--border);
+      padding-top: 8px;
+      margin-top: 6px;
+      word-break: break-all;
+    }
+    .save-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+    .save-name-input {
+      flex: 1;
+      min-width: 120px;
+      margin-top: 0;
+      font-size: 11px;
+      padding: 6px 8px;
+    }
+
+    /* ── STATE LIST ── */
+    .state-scroll {
+      max-height: 380px;
+      overflow-y: auto;
+      padding-right: 4px;
+      margin-bottom: 12px;
+    }
+    .state-scroll::-webkit-scrollbar { width: 3px; }
+    .state-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+    .state-empty {
+      font-size: 11px;
+      color: var(--muted);
+      font-style: italic;
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    .state-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--green);
+      border-radius: 6px;
+      padding: 10px 12px;
+      margin-bottom: 8px;
+      position: relative;
+      animation: fadeIn 0.2s ease;
+    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+
+    .state-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .state-name {
+      font-family: var(--display);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--accent);
+    }
+    .state-num {
+      font-size: 9px;
+      color: var(--muted);
+      flex-shrink: 0;
+    }
+    .state-values {
+      font-size: 11px;
+      color: var(--text);
+      margin-top: 4px;
+      line-height: 1.5;
+    }
+    .state-values b { color: var(--green); }
+    .state-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 6px;
+    }
+    .state-time {
+      font-size: 9px;
+      color: var(--muted);
+    }
+    .delete-btn {
+      background: none;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 12px;
+      padding: 0 2px;
+      line-height: 1;
+      transition: color 0.1s;
+    }
+    .delete-btn:hover { color: var(--red); }
+
+    /* ── EXPORT AREA ── */
+    .export-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    /* ── TAB PANELS ── */
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ── BILINEAR SPECIFIC ── */
+    .corner-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      border: 1px dashed var(--border);
+      border-radius: 6px;
+      padding: 10px;
+      margin: 10px 0;
+    }
+    .corner-label {
+      font-size: 9px;
+      color: var(--accent2);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      grid-column: 1/-1;
+    }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: var(--green);
+      color: #fff;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      padding: 10px 20px;
+      border-radius: 6px;
+      z-index: 999;
+      transition: transform 0.25s ease;
+      pointer-events: none;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+    .toast.error { background: var(--red); }
+  </style>
+</head>
+<body>
+
+<div class="wrapper">
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo-block">
+      <div class="logo">Thermo<span>Lab</span> <span class="logo-badge">v0.2.0-alpha</span></div>
+      <div class="logo-sub">Arvexa Technologies &nbsp;·&nbsp; UFAL &nbsp;·&nbsp; Motor de Interpolação Termodinâmica</div>
+    </div>
+    <div class="header-right">
+      <div id="clock"></div>
+      <div class="state-counter" id="stateCounter">0 estados salvos</div>
+    </div>
+  </header>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('linear', this)">↗ Interpolação Linear</button>
+    <button class="tab-btn" onclick="switchTab('bilinear', this)">⊞ Interpolação Dupla</button>
+    <button class="tab-btn" onclick="switchTab('states', this)">≡ Rastreador</button>
+  </div>
+
+  <!-- ══════ TAB: LINEAR ══════ -->
+  <div id="tab-linear" class="tab-panel active">
+    <div class="grid">
+
+      <!-- Calc panel -->
+      <div class="panel">
+        <div class="panel-title"><span class="dot dot-blue"></span> Interpolação Linear</div>
+
+        <div class="field-group">
+          <div>
+            <label>X₁ — limite inferior</label>
+            <input type="number" id="l-x1" placeholder="ex: 1500" />
+          </div>
+          <div>
+            <label>Y₁ — propriedade em X₁</label>
+            <input type="number" id="l-y1" placeholder="ex: 2792.0" />
+          </div>
+        </div>
+
+        <div class="field-group">
+          <div>
+            <label>X₂ — limite superior</label>
+            <input type="number" id="l-x2" placeholder="ex: 1600" />
+          </div>
+          <div>
+            <label>Y₂ — propriedade em X₂</label>
+            <input type="number" id="l-y2" placeholder="ex: 2794.0" />
+          </div>
+        </div>
+
+        <div class="field-group full">
+          <div>
+            <label class="highlight">▶ X alvo — valor desejado</label>
+            <input type="number" id="l-xT" class="target" placeholder="ex: 1525" />
+          </div>
+        </div>
+
+        <div class="field-group">
+          <div>
+            <label>Grandeza de X</label>
+            <select id="l-xUnit">
+              <option>kPa</option><option>MPa</option><option>bar</option>
+              <option>°C</option><option>K</option><option>—</option>
+            </select>
+          </div>
+          <div>
+            <label>Grandeza de Y</label>
+            <select id="l-yUnit">
+              <option>kJ/kg</option><option>kJ/kg·K</option><option>kg/m³</option>
+              <option>kPa</option><option>°C</option><option>—</option>
+            </select>
+          </div>
+        </div>
+
+        <button class="btn btn-primary" onclick="calcLinear()">Calcular Y →</button>
+
+        <div id="l-result" class="result-box">
+          <div class="result-label">Resultado</div>
+          <div id="l-value" class="result-value"></div>
+          <div id="l-unit-display" class="result-unit"></div>
+          <div id="l-formula" class="result-formula"></div>
+          <div class="save-row">
+            <input type="text" id="l-saveName" class="save-name-input" placeholder="Nome do estado (ex: Saída Bomba)" />
+            <button class="btn btn-secondary btn-sm" onclick="saveFromLinear()">+ Salvar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mini state preview -->
+      <div class="panel">
+        <div class="panel-title"><span class="dot dot-green"></span> Últimos Estados</div>
+        <div id="l-preview" class="state-scroll">
+          <div class="state-empty">Nenhum estado ainda.<br/>Calcule e salve →</div>
+        </div>
+        <div class="export-row">
+          <button class="btn btn-secondary" style="margin-top:0" onclick="exportTxt()">⬇ Exportar .txt</button>
+          <button class="btn btn-danger" onclick="clearAll()">✕ Limpar tudo</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════ TAB: BILINEAR ══════ -->
+  <div id="tab-bilinear" class="tab-panel">
+    <div class="grid">
+
+      <div class="panel">
+        <div class="panel-title"><span class="dot dot-cyan"></span> Interpolação Dupla (Bilinear)</div>
+        <p style="font-size:10px;color:var(--muted);margin-bottom:16px;line-height:1.5;">
+          Use para tabelas de vapor superaquecido com duas variáveis (ex: P e T simultaneamente).
+        </p>
+
+        <div class="field-group">
+          <div>
+            <label>P₁ — pressão inferior</label>
+            <input type="number" id="b-p1" placeholder="ex: 1.0" />
+          </div>
+          <div>
+            <label>P₂ — pressão superior</label>
+            <input type="number" id="b-p2" placeholder="ex: 1.5" />
+          </div>
+        </div>
+        <div class="field-group">
+          <div>
+            <label>T₁ — temp. inferior</label>
+            <input type="number" id="b-t1" placeholder="ex: 200" />
+          </div>
+          <div>
+            <label>T₂ — temp. superior</label>
+            <input type="number" id="b-t2" placeholder="ex: 300" />
+          </div>
+        </div>
+
+        <div class="corner-label">Quatro cantos da tabela — Y(P,T)</div>
+        <div class="corner-grid">
+          <div>
+            <label class="cyan">Y(P₁, T₁)</label>
+            <input type="number" id="b-f11" placeholder="ex: 2827.9" />
+          </div>
+          <div>
+            <label class="cyan">Y(P₁, T₂)</label>
+            <input type="number" id="b-f12" placeholder="ex: 3051.6" />
+          </div>
+          <div>
+            <label class="cyan">Y(P₂, T₁)</label>
+            <input type="number" id="b-f21" placeholder="ex: 2796.8" />
+          </div>
+          <div>
+            <label class="cyan">Y(P₂, T₂)</label>
+            <input type="number" id="b-f22" placeholder="ex: 3024.2" />
+          </div>
+        </div>
+
+        <div class="field-group">
+          <div>
+            <label class="highlight">▶ P alvo</label>
+            <input type="number" id="b-pT" class="target" placeholder="ex: 1.2" />
+          </div>
+          <div>
+            <label class="highlight">▶ T alvo</label>
+            <input type="number" id="b-tT" class="target" placeholder="ex: 250" />
+          </div>
+        </div>
+
+        <div class="field-group">
+          <div>
+            <label>Grandeza de P/T</label>
+            <select id="b-xUnit">
+              <option>MPa / °C</option><option>kPa / °C</option><option>MPa / K</option><option>bar / °C</option>
+            </select>
+          </div>
+          <div>
+            <label>Grandeza de Y</label>
+            <select id="b-yUnit">
+              <option>kJ/kg</option><option>kJ/kg·K</option><option>kg/m³</option><option>—</option>
+            </select>
+          </div>
+        </div>
+
+        <button class="btn btn-primary" onclick="calcBilinear()">Calcular Y(P,T) →</button>
+
+        <div id="b-result" class="result-box">
+          <div class="result-label">Resultado Bilinear</div>
+          <div id="b-value" class="result-value"></div>
+          <div id="b-unit-display" class="result-unit"></div>
+          <div id="b-formula" class="result-formula"></div>
+          <div class="save-row">
+            <input type="text" id="b-saveName" class="save-name-input" placeholder="Nome do estado (ex: Estado 3)" />
+            <button class="btn btn-secondary btn-sm" onclick="saveFromBilinear()">+ Salvar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Info panel -->
+      <div class="panel">
+        <div class="panel-title"><span class="dot dot-cyan"></span> Como usar</div>
+        <div style="font-size:11px;color:var(--muted);line-height:1.8;">
+          <p style="color:var(--text);margin-bottom:12px;">Exemplo: Vapor superaquecido a P = 1.2 MPa e T = 250 °C.</p>
+          <p><b style="color:var(--accent2);">1.</b> Preencha os limites P₁=1.0, P₂=1.5</p>
+          <p><b style="color:var(--accent2);">2.</b> Preencha os limites T₁=200, T₂=300</p>
+          <p><b style="color:var(--accent2);">3.</b> Preencha os 4 valores de canto da tabela</p>
+          <p><b style="color:var(--accent2);">4.</b> Informe P=1.2, T=250 como alvos</p>
+          <p><b style="color:var(--accent2);">5.</b> Clique Calcular</p>
+          <br/>
+          <p style="color:var(--border);border-top:1px solid var(--border);padding-top:12px;">
+            A interpolação bilinear faz:<br/>
+            1. Interpola em T para P₁ → R₁<br/>
+            2. Interpola em T para P₂ → R₂<br/>
+            3. Interpola em P entre R₁ e R₂
+          </p>
+        </div>
+        <div id="b-preview" class="state-scroll" style="margin-top:16px;border-top:1px solid var(--border);padding-top:16px;">
+          <div class="state-empty">Estados salvos aparecem aqui</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════ TAB: STATES ══════ -->
+  <div id="tab-states" class="tab-panel">
+    <div class="panel">
+      <div class="panel-title"><span class="dot dot-green"></span> Rastreador de Estados — Sessão Completa</div>
+
+      <div id="states-full" class="state-scroll" style="max-height:520px;">
+        <div class="state-empty">Nenhum estado salvo ainda.<br/>Use os módulos de interpolação para calcular e salvar.</div>
+      </div>
+
+      <div class="export-row" style="margin-top:12px;">
+        <button class="btn btn-secondary" style="margin-top:0" onclick="exportTxt()">⬇ Exportar .txt</button>
+        <button class="btn btn-danger" onclick="clearAll()">✕ Limpar todos os estados</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /wrapper -->
+
+<!-- TOAST -->
+<div id="toast" class="toast"></div>
+
+<script>
+  // ── STATE STORAGE ─────────────────────────────────────────────
+  const STORAGE_KEY = 'thermolab_states_v2';
+  let states = [];
+
+  function loadStates() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) states = JSON.parse(raw);
+    } catch(e) { states = []; }
+    renderAll();
+  }
+
+  function persistStates() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(states));
+    renderAll();
+  }
+
+  function pushState(name, xLabel, yValue, yUnit, formula, method) {
+    const now = new Date();
+    states.push({
+      id: Date.now(),
+      name,
+      xLabel,
+      yValue,
+      yUnit,
+      formula,
+      method,
+      time: now.toLocaleTimeString('pt-BR'),
+      date: now.toLocaleDateString('pt-BR')
+    });
+    persistStates();
+    showToast('Estado salvo: ' + name);
+  }
+
+  function deleteState(id) {
+    states = states.filter(s => s.id !== id);
+    persistStates();
+  }
+
+  function clearAll() {
+    if (!states.length) return;
+    if (!confirm('Apagar todos os ' + states.length + ' estados?')) return;
+    states = [];
+    persistStates();
+    showToast('Sessão limpa', 'error');
+  }
+
+  // ── RENDER STATES ─────────────────────────────────────────────
+  function stateCardHTML(s, idx) {
+    return `
+      <div class="state-card">
+        <div class="state-card-header">
+          <div class="state-name">[E${idx+1}] ${esc(s.name)}</div>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <span class="state-num">${s.method || 'linear'}</span>
+            <button class="delete-btn" onclick="deleteState(${s.id})" title="Remover">✕</button>
+          </div>
+        </div>
+        <div class="state-values">
+          ${s.xLabel ? s.xLabel + ' &nbsp;→&nbsp; ' : ''}Y = <b>${s.yValue}</b> ${s.yUnit}
+        </div>
+        <div class="state-meta">
+          <span class="state-time">${s.date} ${s.time}</span>
+        </div>
+      </div>`;
+  }
+
+  function emptyHTML() {
+    return '<div class="state-empty">Nenhum estado salvo ainda.</div>';
+  }
+
+  function renderAll() {
+    const html = states.length
+      ? states.map((s, i) => stateCardHTML(s, i)).join('')
+      : emptyHTML();
+
+    const els = ['l-preview', 'b-preview', 'states-full'];
+    els.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.innerHTML = html;
+    });
+
+    const counter = document.getElementById('stateCounter');
+    if (counter) counter.textContent = states.length + ' estado' + (states.length !== 1 ? 's' : '') + ' salvo' + (states.length !== 1 ? 's' : '');
+  }
+
+  function esc(str) {
+    return String(str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  // ── LINEAR INTERPOLATION ──────────────────────────────────────
+  let linearResult = null;
+
+  function calcLinear() {
+    const x1 = parseFloat(document.getElementById('l-x1').value);
+    const y1 = parseFloat(document.getElementById('l-y1').value);
+    const x2 = parseFloat(document.getElementById('l-x2').value);
+    const y2 = parseFloat(document.getElementById('l-y2').value);
+    const xT = parseFloat(document.getElementById('l-xT').value);
+    const xUnit = document.getElementById('l-xUnit').value;
+    const yUnit = document.getElementById('l-yUnit').value;
+
+    const box = document.getElementById('l-result');
+
+    if ([x1, y1, x2, y2, xT].some(isNaN)) {
+      showError(box, 'Preencha todos os 5 campos antes de calcular.');
+      linearResult = null; return;
+    }
+
+    // ── Division by zero guard ──
+    if (x1 === x2) {
+      showError(box, 'X₁ e X₂ não podem ser iguais.\nA interpolação requer dois pontos distintos.');
+      linearResult = null; return;
+    }
+
+    const y = y1 + (xT - x1) * (y2 - y1) / (x2 - x1);
+    const formula = `y = ${y1} + (${xT} - ${x1}) × (${y2} - ${y1}) / (${x2} - ${x1})`;
+
+    linearResult = { xLabel: `X = ${xT} ${xUnit}`, yValue: round(y), yUnit, formula };
+
+    box.className = 'result-box visible success';
+    document.getElementById('l-value').className = 'result-value';
+    document.getElementById('l-value').textContent = round(y);
+    document.getElementById('l-unit-display').textContent = yUnit;
+    document.getElementById('l-formula').textContent = formula;
+  }
+
+  function saveFromLinear() {
+    if (!linearResult) { showToast('Calcule primeiro.', 'error'); return; }
+    const name = document.getElementById('l-saveName').value.trim() || 'Estado sem nome';
+    pushState(name, linearResult.xLabel, linearResult.yValue, linearResult.yUnit, linearResult.formula, 'linear');
+    document.getElementById('l-saveName').value = '';
+  }
+
+  // ── BILINEAR INTERPOLATION ────────────────────────────────────
+  let bilinearResult = null;
+
+  function calcBilinear() {
+    const p1 = parseFloat(document.getElementById('b-p1').value);
+    const p2 = parseFloat(document.getElementById('b-p2').value);
+    const t1 = parseFloat(document.getElementById('b-t1').value);
+    const t2 = parseFloat(document.getElementById('b-t2').value);
+    const f11 = parseFloat(document.getElementById('b-f11').value);
+    const f12 = parseFloat(document.getElementById('b-f12').value);
+    const f21 = parseFloat(document.getElementById('b-f21').value);
+    const f22 = parseFloat(document.getElementById('b-f22').value);
+    const pT = parseFloat(document.getElementById('b-pT').value);
+    const tT = parseFloat(document.getElementById('b-tT').value);
+    const yUnit = document.getElementById('b-yUnit').value;
+
+    const box = document.getElementById('b-result');
+
+    if ([p1,p2,t1,t2,f11,f12,f21,f22,pT,tT].some(isNaN)) {
+      showError(box, 'Preencha todos os campos antes de calcular.');
+      bilinearResult = null; return;
+    }
+
+    if (p1 === p2) { showError(box, 'P₁ e P₂ não podem ser iguais.'); bilinearResult = null; return; }
+    if (t1 === t2) { showError(box, 'T₁ e T₂ não podem ser iguais.'); bilinearResult = null; return; }
+
+    // Step 1: interp in T for P1 and P2
+    const r1 = f11 + (tT - t1) * (f12 - f11) / (t2 - t1); // Y(P1, tT)
+    const r2 = f21 + (tT - t1) * (f22 - f21) / (t2 - t1); // Y(P2, tT)
+    // Step 2: interp in P
+    const y  = r1  + (pT - p1) * (r2  - r1)  / (p2 - p1);
+
+    const formula =
+      `Passo 1 — interpola em T:\n` +
+      `  R₁ = Y(P₁,tT) = ${f11} + (${tT}-${t1})×(${f12}-${f11})/(${t2}-${t1}) = ${round(r1)}\n` +
+      `  R₂ = Y(P₂,tT) = ${f21} + (${tT}-${t1})×(${f22}-${f21})/(${t2}-${t1}) = ${round(r2)}\n` +
+      `Passo 2 — interpola em P:\n` +
+      `  Y = ${round(r1)} + (${pT}-${p1})×(${round(r2)}-${round(r1)})/(${p2}-${p1})`;
+
+    bilinearResult = {
+      xLabel: `P=${pT}, T=${tT}`,
+      yValue: round(y), yUnit, formula
+    };
+
+    box.className = 'result-box visible success';
+    document.getElementById('b-value').className = 'result-value';
+    document.getElementById('b-value').textContent = round(y);
+    document.getElementById('b-unit-display').textContent = yUnit;
+    document.getElementById('b-formula').textContent = formula;
+  }
+
+  function saveFromBilinear() {
+    if (!bilinearResult) { showToast('Calcule primeiro.', 'error'); return; }
+    const name = document.getElementById('b-saveName').value.trim() || 'Estado sem nome';
+    pushState(name, bilinearResult.xLabel, bilinearResult.yValue, bilinearResult.yUnit, bilinearResult.formula, 'bilinear');
+    document.getElementById('b-saveName').value = '';
+  }
+
+  // ── EXPORT ────────────────────────────────────────────────────
+  function exportTxt() {
+    if (!states.length) { showToast('Nenhum estado para exportar.', 'error'); return; }
+
+    const now = new Date().toLocaleString('pt-BR');
+    let lines = [
+      'RELATORIO DE CICLO TERMICO - THERMOLAB v0.2.0',
+      'Arvexa Technologies | UFAL',
+      'Gerado em: ' + now,
+      '============================================================',
+      ''
+    ];
+
+    states.forEach((s, i) => {
+      lines.push(`ESTADO ${i+1}: ${s.name}`);
+      lines.push(`  Metodo: ${s.method}`);
+      if (s.xLabel) lines.push(`  Entrada: ${s.xLabel}`);
+      lines.push(`  Resultado: ${s.yValue} ${s.yUnit}`);
+      lines.push(`  Salvo em: ${s.date} ${s.time}`);
+      if (s.formula) {
+        lines.push('  Formula:');
+        s.formula.split('\n').forEach(l => lines.push('    ' + l));
+      }
+      lines.push('');
+    });
+
+    lines.push('============================================================');
+    lines.push('FIM DO RELATORIO');
+
+    // BOM para UTF-8 correto no Windows/Android
+    const BOM = '\uFEFF';
+    const content = BOM + lines.join('\r\n');
+    const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'thermolab_sessao_' + Date.now() + '.txt';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast('Sessão exportada!');
+  }
+
+  // ── TABS ──────────────────────────────────────────────────────
+  function switchTab(id, btn) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  // ── HELPERS ───────────────────────────────────────────────────
+  function round(n) {
+    return parseFloat(n.toFixed(4));
+  }
+
+  function showError(box, msg) {
+    box.className = 'result-box visible error';
+    const valEl = box.querySelector('.result-value') || document.createElement('div');
+    valEl.className = 'result-value error';
+    valEl.textContent = '⚠ ' + msg;
+    const formulaEl = box.querySelector('.result-formula');
+    if (formulaEl) formulaEl.textContent = '';
+    const unitEl = box.querySelector('.result-unit');
+    if (unitEl) unitEl.textContent = '';
+  }
+
+  let toastTimer;
+  function showToast(msg, type) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'toast show' + (type === 'error' ? ' error' : '');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 2400);
+  }
+
+  // ── CLOCK ─────────────────────────────────────────────────────
+  function updateClock() {
+    const el = document.getElementById('clock');
+    if (el) el.textContent = new Date().toLocaleString('pt-BR');
+  }
+  setInterval(updateClock, 1000);
+  updateClock();
+
+  // ── INIT ──────────────────────────────────────────────────────
+  loadStates();
+</script>
+</body>
+</html>
