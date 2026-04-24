@@ -1,10 +1,22 @@
-# 🔵 Arvexa ThermoCalc (v0.1.0-alpha)
+<div align="center">
+  <img src="https://raw.githubusercontent.com/AAD-Systems/thermolab/main/assets/banner.gif" width="100%" alt="Arvexa ThermoCalc Banner">
+  
+  <br />
 
-> **Arvexa Technologies** | High-Performance Tools for Chemical Engineering
+  # 🔵 Arvexa ThermoCalc (v0.1.0-alpha)
+  
+  [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+  [![Version](https://img.shields.io/badge/version-0.1.0--alpha-cyan.svg)](#)
+  [![Status](https://img.shields.io/badge/status-active-green.svg)](#)
 
-O ThermoCalc é um motor de processamento termodinâmico desenhado para eliminar erros em cascata em projetos de ciclos térmicos, automatizando a interpolação e o rastreamento de estados físicos.
+  > **Arvexa Technologies** | High-Performance Tools for Chemical Engineering
+  
+  *O ThermoCalc é um motor de processamento termodinâmico desenhado para eliminar erros em cascata em projetos de ciclos térmicos, automatizando a interpolação e o rastreamento de estados físicos.*
 
-**Visualização:** [https://aad-systems.github.io/thermolab/](https://aad-systems.github.io/thermolab/)
+  **[Acessar Aplicação Web](https://aad-systems.github.io/thermolab/)**
+</div>
+
+---
 
 ## 🚀 Funcionalidades do MVP
 
@@ -21,6 +33,6 @@ O ThermoCalc é um motor de processamento termodinâmico desenhado para eliminar
 
 ## 📝 Roadmap (Evolução PIBITI)
 
-* [x] Motor Matemático e Rastreamento de Estados (Concluído)
-* [ ] Fase 2: Módulo de Visão Computacional (OCR) para extração de dados direto das tabelas físicas.
-* [ ] Fase 3: Integração com bibliotecas CoolProp/Numpy.
+* [x] **Motor Matemático e Rastreamento de Estados** (Concluído)
+* [ ] **Fase 2:** Módulo de Visão Computacional (OCR) para extração de dados direto das tabelas físicas.
+* [ ] **Fase 3:** Integração com bibliotecas CoolProp/Numpy.
