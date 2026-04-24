@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/AAD-Systems/thermolab/main/assets/banner.gif" width="100%" alt="Arvexa ThermoCalc Banner">
+  <img src="https://raw.githubusercontent.com/AAD-Systems/thermolab/main/assets/banner.png" width="100%" alt="Arvexa ThermoCalc Banner">
   
   <br />
 
