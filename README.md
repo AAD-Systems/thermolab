@@ -5,7 +5,7 @@
 
   <br />
 
-  # 🔵 Arvexa ThermoCalc (v0.1.0-alpha)
+  # 🔵 Arvexa Thermo Lab (v0.1.0-alpha)
   
   [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
   [![Version](https://img.shields.io/badge/version-0.1.0--alpha-cyan.svg)](#)
@@ -13,7 +13,7 @@
 
   > **Arvexa Technologies** | High-Performance Tools for Chemical Engineering
   
-  *O ThermoCalc é um motor de processamento termodinâmico desenhado para eliminar erros em cascata em projetos de ciclos térmicos, automatizando a interpolação e o rastreamento de estados físicos.*
+  *O Thermo Lab é um motor de processamento termodinâmico desenhado para eliminar erros em cascata em projetos de ciclos térmicos, automatizando a interpolação e o rastreamento de estados físicos.*
 
   **[🚀 Acessar Aplicação Web](https://aad-systems.github.io/thermolab/)**
 </div>
