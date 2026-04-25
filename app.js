@@ -672,113 +672,95 @@ function downloadBlob(content, filename, mimeType) {
 // 8. GRÁFICOS (MELHORADOS)
 // ────────────────────────────────────────────────────────────────
 
+// ═══════════════════════════════════════════════════════════════
+// 8. GRÁFICOS (MELHORADOS)
+// ═══════════════════════════════════════════════════════════════
+
 // 8.1 Linear (Chart.js com linha de interpolação e pontos)
 function showLinearGraph() {
-  if (!linearResult) {
-    showToast('Calcule primeiro.', 'error');
-    return;
-  }
-  const { x1, y1, x2, y2, xT, yValue, xUnit, yUnit } = linearResult;
+  if (!linearResult) { showToast('Calcule primeiro.', 'error'); return; }
+  
   const modal = document.getElementById('graph-modal');
   const canvas = document.getElementById('graph-canvas');
-  const ctx = canvas.getContext('2d');
-  document.getElementById('graph-title').textContent = t('linear.title');
-
-  // Destrói gráfico anterior se existir
-  if (window._linearChart) {
-    window._linearChart.destroy();
-    window._linearChart = null;
+  const plotlyDiv = document.getElementById('plotly-container');
+  const title = document.getElementById('graph-title');
+  
+  title.textContent = t('linear.title') || 'Interpolação Linear';
+  
+  // Mostra canvas, esconde plotly
+  canvas.style.display = 'block';
+  plotlyDiv.style.display = 'none';
+  
+  // Destroi gráfico Plotly se existir
+  if (window._bilinearPlotly && typeof Plotly !== 'undefined') {
+    Plotly.purge(plotlyDiv);
+    window._bilinearPlotly = null;
   }
-
-  const isDark = document.body.classList.contains('dark');
-  const gridColor = isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.1)';
-  const textColor = isDark ? '#f1f5f9' : '#0f172a';
-
-  // Cria pontos para a linha reta (apenas dois pontos)
-  const lineData = [
-    { x: x1, y: y1 },
-    { x: x2, y: y2 }
-  ];
-
+  
+  const ctx = canvas.getContext('2d');
+  if (window._linearChart) window._linearChart.destroy();
+  
+  const { x1, y1, x2, y2, xT, yValue, xUnit, yUnit } = linearResult;
   window._linearChart = new Chart(ctx, {
     type: 'scatter',
     data: {
       datasets: [
         {
           label: 'Pontos conhecidos',
-          data: lineData,
+          data: [{x: x1, y: y1}, {x: x2, y: y2}],
           backgroundColor: '#2563eb',
           pointRadius: 6,
-          pointHoverRadius: 8,
           showLine: true,
           borderColor: '#2563eb',
-          borderWidth: 2,
-          borderDash: [],
-          order: 1
+          borderWidth: 2
         },
         {
           label: 'Interpolação',
-          data: [{ x: xT, y: yValue }],
+          data: [{x: xT, y: yValue}],
           backgroundColor: '#dc2626',
-          pointRadius: 8,
-          pointHoverRadius: 10,
-          order: 0
+          pointRadius: 8
         }
       ]
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      plugins: {
-        legend: {
-          labels: { color: textColor }
-        },
-        tooltip: {
-          callbacks: {
-            label: (ctx) => {
-              return `${ctx.dataset.label}: (${ctx.parsed.x}, ${ctx.parsed.y})`;
-            }
-          }
-        }
-      },
       scales: {
-        x: {
-          title: { display: true, text: xUnit, color: textColor },
-          ticks: { color: textColor },
-          grid: { color: gridColor }
-        },
-        y: {
-          title: { display: true, text: yUnit, color: textColor },
-          ticks: { color: textColor },
-          grid: { color: gridColor }
-        }
+        x: { title: { display: true, text: xUnit } },
+        y: { title: { display: true, text: yUnit } }
       }
     }
   });
-
-  // Ajusta altura do canvas
-  canvas.style.height = '400px';
+  
   modal.classList.add('open');
 }
 
 // 8.2 Bilinear (Plotly 3D ou fallback canvas 2D)
 function showBilinearGraph() {
-  if (!bilinearResult) {
-    showToast('Calcule primeiro.', 'error');
-    return;
-  }
-  const { p1, p2, t1, t2, f11, f12, f21, f22, pT, tT, yValue, r1, r2 } = bilinearResult;
+  if (!bilinearResult) { showToast('Calcule primeiro.', 'error'); return; }
+  
   const modal = document.getElementById('graph-modal');
-  document.getElementById('graph-title').textContent = t('bilinear.title');
-
-  // Tentar carregar Plotly dinamicamente
+  const canvas = document.getElementById('graph-canvas');
+  const plotlyDiv = document.getElementById('plotly-container');
+  const title = document.getElementById('graph-title');
+  
+  title.textContent = t('bilinear.title') || 'Interpolação Bilinear';
+  
+  // Mostra plotly, esconde canvas
+  canvas.style.display = 'none';
+  plotlyDiv.style.display = 'block';
+  
+  // Destroi Chart.js se existir
+  if (window._linearChart) {
+    window._linearChart.destroy();
+    window._linearChart = null;
+  }
+  
+  // Se Plotly não estiver carregado, carrega dinamicamente
   if (typeof Plotly === 'undefined') {
-    // Carrega script do Plotly e depois desenha
     const script = document.createElement('script');
     script.src = 'https://cdn.plot.ly/plotly-2.27.0.min.js';
-    script.onload = () => {
-      drawBilinear3D();
-    };
+    script.onload = () => drawBilinear3D();
     script.onerror = () => {
       console.warn('Plotly não carregou, usando fallback 2D.');
       drawBilinearFallback2D();
@@ -787,157 +769,150 @@ function showBilinearGraph() {
   } else {
     drawBilinear3D();
   }
+  
+  modal.classList.add('open');
+}
 
-  function drawBilinear3D() {
-    const canvas = document.getElementById('graph-canvas');
-    canvas.style.height = '500px';
-    // Remove canvas do contexto Chart.js se necessário
-    if (window._linearChart) {
-      window._linearChart.destroy();
-      window._linearChart = null;
-    }
+function drawBilinear3D() {
+  const { p1, p2, t1, t2, f11, f12, f21, f22, pT, tT, yValue, r1, r2 } = bilinearResult;
+  const plotlyDiv = document.getElementById('plotly-container');
+  
+  plotlyDiv.style.height = '100%';
+  
+  const corners = {
+    x: [p1, p1, p2, p2],
+    y: [t1, t2, t1, t2],
+    z: [f11, f12, f21, f22],
+    type: 'scatter3d',
+    mode: 'markers+text',
+    marker: { size: 8, color: '#2563eb' },
+    text: ['f11', 'f12', 'f21', 'f22'],
+    textposition: 'top center',
+    name: 'Cantos'
+  };
+  
+  const intermediates = {
+    x: [p1, p2],
+    y: [tT, tT],
+    z: [r1, r2],
+    type: 'scatter3d',
+    mode: 'markers+text',
+    marker: { size: 6, color: '#f59e0b' },
+    text: ['R₁', 'R₂'],
+    textposition: 'top center',
+    name: 'Intermediários'
+  };
+  
+  const target = {
+    x: [pT],
+    y: [tT],
+    z: [yValue],
+    type: 'scatter3d',
+    mode: 'markers+text',
+    marker: { size: 10, color: '#dc2626' },
+    text: ['Y'],
+    textposition: 'top center',
+    name: 'Interpolação'
+  };
+  
+  const surface = {
+    type: 'mesh3d',
+    x: [p1, p1, p2, p2],
+    y: [t1, t2, t1, t2],
+    z: [f11, f12, f21, f22],
+    opacity: 0.6,
+    color: '#0d9488',
+    name: 'Superfície'
+  };
+  
+  const layout = {
+    autosize: true,
+    scene: {
+      xaxis: { title: 'P' },
+      yaxis: { title: 'T' },
+      zaxis: { title: 'Y' }
+    },
+    paper_bgcolor: document.body.classList.contains('dark') ? '#1e293b' : '#ffffff',
+    plot_bgcolor: document.body.classList.contains('dark') ? '#1e293b' : '#ffffff',
+    font: { color: document.body.classList.contains('dark') ? '#f1f5f9' : '#0f172a' }
+  };
+  
+  Plotly.newPlot('plotly-container', [surface, corners, intermediates, target], layout, {
+    responsive: true,
+    displayModeBar: true
+  });
+  
+  window._bilinearPlotly = true;
+}
 
-    // Pontos da superfície
-    const corners = {
-      x: [p1, p1, p2, p2],
-      y: [t1, t2, t1, t2],
-      z: [f11, f12, f21, f22],
-      type: 'scatter3d',
-      mode: 'markers',
-      marker: { size: 8, color: '#2563eb' },
-      name: 'Cantos da tabela'
-    };
-
-    // Pontos R1 e R2
-    const intermediates = {
-      x: [p1, p2],
-      y: [tT, tT],
-      z: [r1, r2],
-      type: 'scatter3d',
-      mode: 'markers',
-      marker: { size: 6, color: '#f59e0b' },
-      name: 'R₁, R₂'
-    };
-
-    // Ponto alvo
-    const target = {
-      x: [pT],
-      y: [tT],
-      z: [yValue],
-      type: 'scatter3d',
-      mode: 'markers',
-      marker: { size: 10, color: '#dc2626' },
-      name: 'Interpolação'
-    };
-
-    // Superfície interpolada (malha simples)
-    const pMesh = [p1, p2];
-    const tMesh = [t1, t2];
-    const zMesh = [
-      [f11, f12],
-      [f21, f22]
-    ];
-
-    const surface = {
-      type: 'surface',
-      x: pMesh,
-      y: tMesh,
-      z: zMesh,
-      opacity: 0.6,
-      colorscale: 'Viridis',
-      showscale: false
-    };
-
-    const layout = {
-      title: 'Interpolação Bilinear',
-      scene: {
-        xaxis: { title: 'P' },
-        yaxis: { title: 'T' },
-        zaxis: { title: 'Y' }
-      },
-      paper_bgcolor: document.body.classList.contains('dark') ? '#1e293b' : '#ffffff',
-      plot_bgcolor: document.body.classList.contains('dark') ? '#1e293b' : '#ffffff',
-      font: { color: document.body.classList.contains('dark') ? '#f1f5f9' : '#0f172a' }
-    };
-
-    Plotly.newPlot('graph-canvas', [surface, corners, intermediates, target], layout, {
-      responsive: true,
-      displayModeBar: true
-    });
-
-    modal.classList.add('open');
-  }
-
-  function drawBilinearFallback2D() {
-    const canvas = document.getElementById('graph-canvas');
-    canvas.style.height = '400px';
-    const ctx = canvas.getContext('2d');
-    // Limpa canvas
-    canvas.width = 600;
-    canvas.height = 400;
-    ctx.clearRect(0, 0, 600, 400);
-
-    const xScale = (val) => 80 + (val - p1) / (p2 - p1) * 440;
-    const yScale = (val) => 280 - (val - t1) / (t2 - t1) * 200;
-
-    // Desenha grade
-    ctx.strokeStyle = '#cbd5e1';
-    ctx.lineWidth = 1;
-    // Linhas verticais
+// Fallback 2D completo
+function drawBilinearFallback2D() {
+  const canvas = document.getElementById('graph-canvas');
+  const plotlyDiv = document.getElementById('plotly-container');
+  plotlyDiv.style.display = 'none';
+  canvas.style.display = 'block';
+  
+  const ctx = canvas.getContext('2d');
+  canvas.width = canvas.clientWidth;
+  canvas.height = canvas.clientHeight;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  
+  const { p1, p2, t1, t2, f11, f12, f21, f22, pT, tT, yValue } = bilinearResult;
+  const margin = 60;
+  const w = canvas.width - margin * 2;
+  const h = canvas.height - margin * 2;
+  
+  const xScale = (val) => margin + (val - p1) / (p2 - p1) * w;
+  const yScale = (val) => margin + h - (val - t1) / (t2 - t1) * h; // inverte eixo Y
+  
+  // Grade
+  ctx.strokeStyle = '#94a3b8';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(xScale(p1), yScale(t1)); ctx.lineTo(xScale(p1), yScale(t2));
+  ctx.moveTo(xScale(p2), yScale(t1)); ctx.lineTo(xScale(p2), yScale(t2));
+  ctx.moveTo(xScale(p1), yScale(t1)); ctx.lineTo(xScale(p2), yScale(t1));
+  ctx.moveTo(xScale(p1), yScale(t2)); ctx.lineTo(xScale(p2), yScale(t2));
+  ctx.stroke();
+  
+  // Cantos
+  const corners = [
+    { x: p1, y: t1, val: f11, label: `f11=${f11}` },
+    { x: p1, y: t2, val: f12, label: `f12=${f12}` },
+    { x: p2, y: t1, val: f21, label: `f21=${f21}` },
+    { x: p2, y: t2, val: f22, label: `f22=${f22}` }
+  ];
+  corners.forEach(c => {
     ctx.beginPath();
-    ctx.moveTo(xScale(p1), yScale(t1)); ctx.lineTo(xScale(p1), yScale(t2));
-    ctx.moveTo(xScale(p2), yScale(t1)); ctx.lineTo(xScale(p2), yScale(t2));
-    ctx.stroke();
-    // Linhas horizontais
-    ctx.beginPath();
-    ctx.moveTo(xScale(p1), yScale(t1)); ctx.lineTo(xScale(p2), yScale(t1));
-    ctx.moveTo(xScale(p1), yScale(t2)); ctx.lineTo(xScale(p2), yScale(t2));
-    ctx.stroke();
-
-    // Cantos
-    const corners = [
-      { x: p1, y: t1, val: f11, label: `f11=${f11}` },
-      { x: p1, y: t2, val: f12, label: `f12=${f12}` },
-      { x: p2, y: t1, val: f21, label: `f21=${f21}` },
-      { x: p2, y: t2, val: f22, label: `f22=${f22}` }
-    ];
-    corners.forEach(c => {
-      ctx.beginPath();
-      ctx.arc(xScale(c.x), yScale(c.y), 12, 0, 2 * Math.PI);
-      ctx.fillStyle = '#2563eb';
-      ctx.fill();
-      ctx.strokeStyle = '#fff';
-      ctx.stroke();
-      ctx.fillStyle = '#fff';
-      ctx.font = '10px Inter, sans-serif';
-      ctx.fillText(c.label, xScale(c.x) + 15, yScale(c.y) + 5);
-    });
-
-    // Ponto alvo
-    ctx.beginPath();
-    ctx.arc(xScale(pT), yScale(tT), 15, 0, 2 * Math.PI);
-    ctx.fillStyle = '#dc2626';
+    ctx.arc(xScale(c.x), yScale(c.y), 8, 0, 2 * Math.PI);
+    ctx.fillStyle = '#2563eb';
     ctx.fill();
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 12px Inter, sans-serif';
-    ctx.fillText(`Y=${yValue}`, xScale(pT) + 15, yScale(tT) - 10);
-
-    modal.classList.add('open');
-  }
+    ctx.font = 'bold 10px Inter';
+    ctx.fillText(c.label, xScale(c.x) + 12, yScale(c.y) + 4);
+  });
+  
+  // Ponto alvo
+  ctx.beginPath();
+  ctx.arc(xScale(pT), yScale(tT), 10, 0, 2 * Math.PI);
+  ctx.fillStyle = '#dc2626';
+  ctx.fill();
+  ctx.fillStyle = '#fff';
+  ctx.font = 'bold 12px Inter';
+  ctx.fillText(`Y=${yValue}`, xScale(pT) + 14, yScale(tT) - 10);
 }
 
 function closeGraphModal() {
   document.getElementById('graph-modal').classList.remove('open');
-  // Destroi gráfico Chart se existir
   if (window._linearChart) {
     window._linearChart.destroy();
     window._linearChart = null;
   }
-  // Limpa Plotly se estiver ativo
-  const plotlyCanvas = document.getElementById('graph-canvas');
-  if (plotlyCanvas && typeof Plotly !== 'undefined') {
-    Plotly.purge(plotlyCanvas);
+  const plotlyDiv = document.getElementById('plotly-container');
+  if (plotlyDiv && typeof Plotly !== 'undefined') {
+    Plotly.purge(plotlyDiv);
   }
+  window._bilinearPlotly = null;
 }
 
 // ────────────────────────────────────────────────────────────────
