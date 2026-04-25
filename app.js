@@ -324,66 +324,40 @@ function updateStateCounterText() {
 // ─────────────── MODAL DE BOAS-VINDAS / CHANGELOG ───────────────
 (function() {
   const STORAGE_KEY = 'thermolab_welcome_agreed';
-  
-  let modal = null;
-  let agreeBtn = null;
-  let closeBtn = null;
-  let overlay = null;
+  const modal = document.getElementById('welcomeModal');
+  if (!modal) return;
 
-  function hasAgreed() {
-    return localStorage.getItem(STORAGE_KEY) === 'true';
-  }
-
-  function closeModal() {
-    if (!modal) return;
-    const container = modal.querySelector('.welcome-modal-container');
-    if (container) {
-      container.style.animation = 'none';
-      container.offsetHeight; // força reflow
-      container.style.animation = 'slideUpModal 0.2s ease reverse';
-    }
-    setTimeout(() => {
-      if (modal) modal.style.display = 'none';
-    }, 200);
+  function hideModal() {
+    modal.style.display = 'none';
   }
 
   function agreeAndClose() {
     localStorage.setItem(STORAGE_KEY, 'true');
-    closeModal();
+    hideModal();
   }
 
-  function showModalIfNeeded() {
-    if (hasAgreed()) return;
-    // Busca os elementos novamente caso o DOM ainda não esteja pronto
-    modal = document.getElementById('welcomeModal');
-    if (!modal) return;
+  // Se já concordou, esconde o modal imediatamente
+  if (localStorage.getItem(STORAGE_KEY) === 'true') {
+    hideModal();
+  } else {
+    // Garante que o modal esteja visível (caso algum script anterior tenha escondido)
     modal.style.display = 'flex';
   }
 
-  // Função que configura os eventos (deve ser chamada após os elementos existirem)
-  function bindModalEvents() {
-    modal = document.getElementById('welcomeModal');
-    if (!modal) return;
-
-    agreeBtn = document.getElementById('agreeBtn');
-    closeBtn = document.getElementById('closeWelcomeBtn');
-    overlay = modal.querySelector('.welcome-modal-overlay');
-
+  // Configura os eventos após o DOM estar pronto
+  function bindEvents() {
+    const agreeBtn = document.getElementById('agreeBtn');
+    const closeBtn = document.getElementById('closeWelcomeBtn');
+    const overlay = modal.querySelector('.welcome-modal-overlay');
     if (agreeBtn) agreeBtn.addEventListener('click', agreeAndClose);
     if (closeBtn) closeBtn.addEventListener('click', agreeAndClose);
     if (overlay) overlay.addEventListener('click', agreeAndClose);
   }
 
-  // Aguarda o DOM ficar pronto para exibir e vincular eventos
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function() {
-      bindModalEvents();
-      showModalIfNeeded();
-    });
+    document.addEventListener('DOMContentLoaded', bindEvents);
   } else {
-    // DOM já carregado
-    bindModalEvents();
-    showModalIfNeeded();
+    bindEvents();
   }
 })();
 
