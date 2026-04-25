@@ -206,6 +206,20 @@ body {
   display: block;
 }
 
+/* ─────────────── 7. CORREÇÃO: REMOVER AZUL DOS MINI CABEÇALHOS NO MODO ESCURO ─────────────── */
+body.dark h3,
+body.dark h4,
+body.dark h5,
+body.dark h6,
+body.dark .card-title,
+body.dark .section-title,
+body.dark .widget-title,
+body.dark .panel-title,
+body.dark [class*="title"],
+body.dark [class*="header"]:not(.sidebar-header) {
+  color: var(--text-primary) !important;
+}
+
 /* ─────────────── 7. TOGGLE MOBILE ─────────────── */
 .sidebar-toggle {
   display: none;
