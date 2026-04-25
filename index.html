@@ -316,5 +316,45 @@
 
   <!-- TOAST -->
   <div id="toast" class="toast"></div>
+
+
+
+
+<!-- MODAL DE BOAS-VINDAS / CHANGELOG -->
+<div id="welcomeModal" class="welcome-modal" style="display: none;">
+  <div class="welcome-modal-overlay"></div>
+  <div class="welcome-modal-container">
+    <div class="welcome-modal-header">
+      <h2>✨ Bem‑vindo(a) ao ThermOLab ✨</h2>
+      <button class="welcome-modal-close" id="closeWelcomeBtn" aria-label="Fechar">&times;</button>
+    </div>
+    <div class="welcome-modal-body">
+      <div class="welcome-changelog">
+        <h3>📌 Novidades da versão</h3>
+        <ul>
+          <li><strong>v1.2.0</strong> – Interface totalmente responsiva e modo escuro aprimorado</li>
+          <li><strong>v1.1.0</strong> – Gráficos 3D interativos (Plotly) e exportação de dados</li>
+          <li><strong>v1.0.0</strong> – Cálculos termodinâmicos em tempo real e histórico de estados</li>
+        </ul>
+      </div>
+      <div class="welcome-guidelines">
+        <h3>📋 Diretrizes de uso</h3>
+        <ul>
+          <li>Utilize números decimais com ponto (ex: 25.5)</li>
+          <li>Os resultados são apenas para fins educacionais</li>
+          <li>Seus estados salvos ficam no seu navegador (localStorage)</li>
+          <li>Para dúvidas, consulte a seção "Documentação"</li>
+        </ul>
+      </div>
+    </div>
+    <div class="welcome-modal-footer">
+      <button id="agreeBtn" class="welcome-agree-btn">✅ Concordo e continuar</button>
+    </div>
+  </div>
+</div>
+
+
+
+  
 </body>
 </html>
