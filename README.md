@@ -60,5 +60,5 @@ Se você é professor, pesquisador ou estudante e deseja colaborar ou fornecer f
 * **Instagram:** [@taua.of](https://www.instagram.com/taua.of)
 
 <div align="center">
-  <sub>Desenvolvido por <b>Tauã Miguel</b> para a AAD-Systems.</sub>
+  <sub>Desenvolvido por  <b>Tauã Miguel</b> para a AAD-Systems.</sub>
 </div>
