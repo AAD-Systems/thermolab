@@ -322,6 +322,41 @@ header {
 }
 
 /* ─────────────── 9. TABS ─────────────── */
+/* ═══════════════════════════════════════════════════════════════
+   PAINÉIS DE CONTEÚDO DAS ABAS (tab-panel)
+   ═══════════════════════════════════════════════════════════════ */
+.tab-panel {
+  display: none;
+  animation: fadeSlideOut 0.2s ease forwards;
+}
+
+.tab-panel.active {
+  display: block;
+  animation: fadeSlideIn 0.25s ease forwards;
+}
+
+/* Animações usadas pelas abas */
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeSlideOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
 .tabs {
   display: flex;
   gap: 2px;
