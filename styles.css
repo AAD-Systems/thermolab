@@ -813,38 +813,45 @@ select {
   color: var(--text-primary);
 }
 
-/* ─────────────── 19. MODAL DE GRÁFICO ─────────────── */
+/* ─────────────── 19. MODAL DE GRÁFICO (CORRIGIDO E UNIFICADO) ─────────────── */
 .graph-modal {
   display: none;
   position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.75);
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100dvh;                 /* altura dinâmica do viewport */
+  background: rgba(0, 0, 0, 0.75);
   z-index: 1000;
   align-items: center;
   justify-content: center;
+  overflow: hidden;              /* evita rolagem dupla */
 }
+
 .graph-modal.open {
   display: flex;
 }
+
 .graph-modal-content {
   background: var(--bg-surface);
   border-radius: var(--radius-lg);
   padding: 24px;
-  max-width: 90vw;
-  width: 900px;
-  max-height: 90vh;
-  overflow-y: auto;
-  position: relative;
-  box-shadow: var(--shadow-lg);
+  width: min(90vw, 1000px);      /* largura máxima responsiva */
+  height: min(85vh, 700px);      /* altura máxima controlada */
   display: flex;
   flex-direction: column;
+  position: relative;
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;              /* ESSENCIAL: esconde overflow do gráfico */
 }
+
 .graph-modal-content h3 {
   margin-bottom: 16px;
   font-family: var(--font-heading);
   color: var(--color-primary);
+  flex-shrink: 0;                /* título não diminui */
 }
+
 .close-modal {
   position: absolute;
   top: 12px;
@@ -853,16 +860,24 @@ select {
   cursor: pointer;
   color: var(--text-muted);
   z-index: 10;
+  background: var(--bg-surface);
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
 .close-modal:hover {
   color: var(--danger);
 }
 
-/* Canvas do gráfico (Chart.js e fallback 2D) */
+/* Container do gráfico (Chart.js e fallback canvas) – agora sem conflitos */
 #graph-canvas {
   width: 100% !important;
-  height: auto !important;
-  min-height: 400px;
+  height: 100% !important;       /* ocupa todo o espaço restante do modal */
+  max-height: calc(100% - 40px); /* desconta o título */
   background: var(--bg-surface);
   border-radius: var(--radius-sm);
 }
@@ -872,7 +887,8 @@ select {
 .plotly-container {
   width: 100% !important;
   height: 100% !important;
-  min-height: 500px;
+  max-height: 100%;
+  overflow: hidden !important;
 }
 
 /* ─────────────── 20. SEÇÕES ESPECIAIS (DOCS, TEAM, DONATE) ─────────────── */
