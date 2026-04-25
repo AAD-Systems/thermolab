@@ -53,7 +53,7 @@
   --sidebar-width: 260px;
 }
 
-/* ─────────────── 2. MODO ESCURO ─────────────── */
+/* ─────────────── 2. MODO ESCURO (PALETA COMPLETAMENTE AJUSTADA) ─────────────── */
 body.dark {
   --bg-page: #0f172a;
   --bg-surface: #1e293b;
@@ -67,6 +67,13 @@ body.dark {
   --text-primary: #f1f5f9;
   --text-secondary: #cbd5e1;
   --text-muted: #94a3b8;
+
+  /* Cores primárias agora em tons claros para contraste no fundo escuro */
+  --color-primary: #60a5fa;
+  --color-primary-dark: #3b82f6;
+  --color-primary-light: #93c5fd;
+  --color-secondary: #14b8a6;
+  --color-secondary-light: #5eead4;
 
   --success-bg: rgba(13, 148, 136, 0.15);
   --danger-bg: rgba(220, 38, 38, 0.15);
@@ -215,12 +222,11 @@ body.dark .card-title,
 body.dark .section-title,
 body.dark .widget-title,
 body.dark .panel-title,
-body.dark [class*="title"],
-body.dark [class*="header"]:not(.sidebar-header) {
+body.dark .state-name {
   color: var(--text-primary) !important;
 }
 
-/* ─────────────── 7. TOGGLE MOBILE ─────────────── */
+/* ─────────────── 8. TOGGLE MOBILE ─────────────── */
 .sidebar-toggle {
   display: none;
   position: fixed;
@@ -253,7 +259,7 @@ body.dark [class*="header"]:not(.sidebar-header) {
   }
 }
 
-/* ─────────────── 8. WRAPPER & HEADER ─────────────── */
+/* ─────────────── 9. WRAPPER & HEADER ─────────────── */
 .wrapper {
   max-width: 1200px;
   margin: 0 auto;
@@ -335,7 +341,7 @@ header {
   border: 1px solid var(--border-light);
 }
 
-/* ─────────────── 9. TABS ─────────────── */
+/* ─────────────── 10. TABS ─────────────── */
 /* ═══════════════════════════════════════════════════════════════
    PAINÉIS DE CONTEÚDO DAS ABAS (tab-panel)
    ═══════════════════════════════════════════════════════════════ */
@@ -406,7 +412,7 @@ header {
   color: var(--text-primary);
 }
 
-/* ─────────────── 10. GRID & PAINÉIS ─────────────── */
+/* ─────────────── 11. GRID & PAINÉIS ─────────────── */
 .grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -462,7 +468,7 @@ header {
   box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.25);
 }
 
-/* ─────────────── 11. FORMULÁRIOS ─────────────── */
+/* ─────────────── 12. FORMULÁRIOS ─────────────── */
 .field-group {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -546,7 +552,7 @@ select {
   font-weight: 600;
 }
 
-/* ─────────────── 12. BOTÕES ─────────────── */
+/* ─────────────── 13. BOTÕES ─────────────── */
 .btn {
   width: 100%;
   border: none;
@@ -608,7 +614,7 @@ select {
   letter-spacing: 0.5px;
 }
 
-/* ─────────────── 13. RESULTADO ─────────────── */
+/* ─────────────── 14. RESULTADO ─────────────── */
 .result-box {
   display: none;
   margin-top: 18px;
@@ -683,7 +689,7 @@ select {
   padding: 8px 10px;
 }
 
-/* ─────────────── 14. LISTA DE ESTADOS ─────────────── */
+/* ─────────────── 15. LISTA DE ESTADOS ─────────────── */
 .state-scroll {
   max-height: 380px;
   overflow-y: auto;
@@ -780,7 +786,7 @@ select {
   background: var(--danger-bg);
 }
 
-/* ─────────────── 15. EXPORTAÇÃO ─────────────── */
+/* ─────────────── 16. EXPORTAÇÃO ─────────────── */
 .export-row {
   display: grid;
   grid-template-columns: auto 1fr 1fr;
@@ -792,7 +798,7 @@ select {
   height: 100%;
 }
 
-/* ─────────────── 16. CORNER GRID (BILINEAR) ─────────────── */
+/* ─────────────── 17. CORNER GRID (BILINEAR) ─────────────── */
 .corner-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -813,7 +819,7 @@ select {
   font-weight: 700;
 }
 
-/* ─────────────── 17. TOAST ─────────────── */
+/* ─────────────── 18. TOAST ─────────────── */
 .toast {
   position: fixed;
   bottom: 32px;
@@ -839,7 +845,7 @@ select {
   background: var(--danger);
 }
 
-/* ─────────────── 18. CONTROLES (IDIOMA / TEMA) ─────────────── */
+/* ─────────────── 19. CONTROLES (IDIOMA / TEMA) ─────────────── */
 .language-select {
   background: var(--bg-input);
   border: 1px solid var(--border-medium);
@@ -862,19 +868,19 @@ select {
   color: var(--text-primary);
 }
 
-/* ─────────────── 19. MODAL DE GRÁFICO (CORRIGIDO E UNIFICADO) ─────────────── */
+/* ─────────────── 20. MODAL DE GRÁFICO ─────────────── */
 .graph-modal {
   display: none;
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
-  height: 100dvh;                 /* altura dinâmica do viewport */
+  height: 100dvh;
   background: rgba(0, 0, 0, 0.75);
   z-index: 1000;
   align-items: center;
   justify-content: center;
-  overflow: hidden;              /* evita rolagem dupla */
+  overflow: hidden;
 }
 
 .graph-modal.open {
@@ -885,20 +891,20 @@ select {
   background: var(--bg-surface);
   border-radius: var(--radius-lg);
   padding: 24px;
-  width: min(90vw, 1000px);      /* largura máxima responsiva */
-  height: min(85vh, 700px);      /* altura máxima controlada */
+  width: min(90vw, 1000px);
+  height: min(85vh, 700px);
   display: flex;
   flex-direction: column;
   position: relative;
   box-shadow: var(--shadow-lg);
-  overflow: hidden;              /* ESSENCIAL: esconde overflow do gráfico */
+  overflow: hidden;
 }
 
 .graph-modal-content h3 {
   margin-bottom: 16px;
   font-family: var(--font-heading);
   color: var(--color-primary);
-  flex-shrink: 0;                /* título não diminui */
+  flex-shrink: 0;
 }
 
 .close-modal {
@@ -922,16 +928,14 @@ select {
   color: var(--danger);
 }
 
-/* Container do gráfico (Chart.js e fallback canvas) – agora sem conflitos */
 #graph-canvas {
   width: 100% !important;
-  height: 100% !important;       /* ocupa todo o espaço restante do modal */
-  max-height: calc(100% - 40px); /* desconta o título */
+  height: 100% !important;
+  max-height: calc(100% - 40px);
   background: var(--bg-surface);
   border-radius: var(--radius-sm);
 }
 
-/* Contêiner Plotly (gerado dinamicamente) */
 .js-plotly-plot,
 .plotly-container {
   width: 100% !important;
@@ -940,7 +944,6 @@ select {
   overflow: hidden !important;
 }
 
-/* Dentro de .graph-modal-content */
 #graph-canvas,
 #plotly-container {
   width: 100% !important;
@@ -950,12 +953,11 @@ select {
   background: var(--bg-surface);
 }
 
-/* Ajuste para o Plotly não ultrapassar */
 #plotly-container {
   overflow: hidden;
 }
 
-/* ─────────────── 20. SEÇÕES ESPECIAIS (DOCS, TEAM, DONATE) ─────────────── */
+/* ─────────────── 21. SEÇÕES ESPECIAIS (DOCS, TEAM, DONATE) ─────────────── */
 .docs-content {
   max-width: 800px;
 }
@@ -1004,7 +1006,7 @@ select {
   margin-bottom: 10px;
 }
 
-/* ─────────────── 21. ANIMAÇÕES ─────────────── */
+/* ─────────────── 22. ANIMAÇÕES ─────────────── */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(-6px); }
   to { opacity: 1; transform: translateY(0); }
@@ -1014,7 +1016,7 @@ select {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ─────────────── 22. RESPONSIVO ─────────────── */
+/* ─────────────── 23. RESPONSIVO ─────────────── */
 @media (max-width: 600px) {
   .field-group,
   .field-group.triple {
