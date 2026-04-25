@@ -926,6 +926,21 @@ select {
   overflow: hidden !important;
 }
 
+/* Dentro de .graph-modal-content */
+#graph-canvas,
+#plotly-container {
+  width: 100% !important;
+  height: 100% !important;
+  max-height: calc(100% - 40px);
+  border-radius: var(--radius-sm);
+  background: var(--bg-surface);
+}
+
+/* Ajuste para o Plotly não ultrapassar */
+#plotly-container {
+  overflow: hidden;
+}
+
 /* ─────────────── 20. SEÇÕES ESPECIAIS (DOCS, TEAM, DONATE) ─────────────── */
 .docs-content {
   max-width: 800px;
