@@ -1,0 +1,20 @@
+name: Build APK
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install -g @bubblewrap/cli
+      - run: bubblewrap init --manifest=https://aad-systems.github.io/thermolab/manifest.json --directory=./android
+      - run: cd android && bubblewrap build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: thermolab-apk
+          path: android/app/build/outputs/bundle/release/*.aab
