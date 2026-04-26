@@ -332,7 +332,6 @@ function updateStateCounterText() {
   }
 
   function agreeAndClose() {
-    localStorage.setItem(STORAGE_KEY, 'true');
     hideModal();
   }
 
