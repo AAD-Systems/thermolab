@@ -332,16 +332,18 @@ function updateStateCounterText() {
   }
 
   function agreeAndClose() {
+        
+    localStorage.setItem(STORAGE_KEY, 'true');
     hideModal();
   }
 
   // Se já concordou, esconde o modal imediatamente
-  if (localStorage.getItem(STORAGE_KEY) === 'true') {
-    hideModal();
-  } else {
+    // if (localStorage.getItem(STORAGE_KEY) === 'true') {
+   //    hideModal();
+    // } else {
     // Garante que o modal esteja visível (caso algum script anterior tenha escondido)
-    modal.style.display = 'flex';
-  }
+   //    modal.style.display = 'flex';
+   //  }
 
   // Configura os eventos após o DOM estar pronto
   function bindEvents() {
