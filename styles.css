@@ -55,6 +55,27 @@
 
 
 
+/* ── SEÇÃO VALIDAÇÃO ── */
+#timer, #attempts {
+  font-family: var(--font-mono);
+}
+#challenge-user-y {
+  border: 2px solid var(--info);
+}
+#challenge-real-y {
+  background: var(--bg-hover);
+  color: var(--text-muted);
+}
+
+.challenge-correct {
+  border-left: 4px solid var(--success) !important;
+  background: var(--success-bg) !important;
+}
+.challenge-wrong {
+  border-left: 4px solid var(--danger) !important;
+  background: var(--danger-bg) !important;
+}
+                                
 
 
 /* ─────────────── MODAL DE BOAS-VINDAS ─────────────── */
