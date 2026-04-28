@@ -365,7 +365,7 @@
   <div class="wrapper">
     <div class="panel">
       <div class="panel-title"><span class="dot dot-blue"></span> Validação Científica — Modo Prova</div>
-      
+
       <p class="text-muted" style="margin-bottom:20px;">
         Compare seu desempenho manual com o ThermoLab e meça o erro relativo em relação a dados reais de vapor saturado (Çengel).
       </p>
@@ -375,17 +375,28 @@
           <label>Pressione "Iniciar" para começar o desafio</label>
           <button class="btn btn-primary" id="btn-start-challenge" onclick="startChallenge()">▶ Iniciar Prova</button>
         </div>
-        <div style="display:flex; align-items:center; gap:10px;">
+        <div class="timer-attempts-group">
           <div style="text-align:center;">
-            <span style="font-size:2rem; font-weight:700; color:var(--color-primary);" id="timer">00:00</span>
-            <br/><small class="text-muted">Tempo</small>
+            <span id="timer">00:00</span><br/>
+            <small class="text-muted">Tempo</small>
           </div>
           <div style="text-align:center;">
-            <span style="font-size:2rem; font-weight:700; color:var(--color-primary);" id="attempts">0</span>
-            <br/><small class="text-muted">Tentativas</small>
+            <span id="attempts">0</span><br/>
+            <small class="text-muted">Tentativas</small>
           </div>
         </div>
       </div>
+
+      <!-- O restante do código permanece igual -->
+      <div id="challenge-area" style="display:none;">
+        <!-- ... -->
+      </div>
+      <div id="challenge-history" style="margin-top:30px;">
+        <!-- ... -->
+      </div>
+    </div>
+  </div>
+</section>
 
       <div id="challenge-area" style="display:none;">
         <div class="field-group">
