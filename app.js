@@ -574,6 +574,33 @@ function exportChallengeCSV() {
 }
 
 
+
+// ========== CONFIGURAÇÃO DOS EVENTOS DA SEÇÃO VALIDAÇÃO ==========
+(function() {
+  function bindValidationEvents() {
+    // Botões da seção validação
+    const startBtn = document.getElementById('btn-start-challenge');
+    const resetBtn = document.getElementById('btn-reset-challenge');
+    
+    if (startBtn) startBtn.addEventListener('click', startChallenge);
+    if (resetBtn) resetBtn.addEventListener('click', resetChallenge);
+    
+    // Link da sidebar (se houver, garante navegação)
+    const validateLink = document.querySelector('.sidebar-link[data-section="validate"]');
+    if (validateLink) {
+      validateLink.addEventListener('click', () => switchSection('validate'));
+    }
+  }
+  
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bindValidationEvents);
+  } else {
+    bindValidationEvents();
+  }
+})();
+
+
+    
 // ────────────────────────────────────────────────────────────────
 // 2. TEMA ESCURO
 // ────────────────────────────────────────────────────────────────
