@@ -53,401 +53,31 @@
   --sidebar-width: 260px;
 }
 
-
-/* Reset de box-sizing global (Início CSS) */
+/* Reset de box-sizing global */
 *, *::before, *::after {
   box-sizing: border-box;
-}
-
-/* Garante que o corpo da página não force largura extra */
-body {
-  overflow-x: hidden;
-  max-width: 100vw;
-}
-
-/* Seção de validação – responsiva */
-#section-validate {
-  width: 100%;
-  padding: 0 1rem;
-}
-
-#section-validate .panel {
-  max-width: 1000px;
-  width: 100%;
-  margin: 0 auto;
-  padding: 1rem;
-  background: var(--bg-surface);
-  border-radius: 1rem;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  overflow-x: auto; /* previne vazamento lateral interno */
-}
-
-/* Agrupamento de campos – grid responsivo */
-#section-validate .field-group {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 1.5rem;
-  align-items: end;
-}
-
-/* Para o container do cronômetro e tentativas */
-#section-validate .field-group > div:last-child {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 1.5rem;
-  align-items: center;
-}
-
-#timer, #attempts {
-  font-family: var(--font-mono);
-  font-size: 1.8rem;
-  white-space: nowrap;
-}
-
-/* Ajuste do botão e texto de instrução */
-#section-validate .field-group > div:first-child {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-/* Área do desafio – inputs lado a lado em grid */
-#challenge-area .field-group {
-  grid-template-columns: 1fr 1fr;
-}
-
-/* Em telas menores que 600px */
-@media (max-width: 600px) {
-  #challenge-area .field-group,
-  #section-validate .field-group {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-  
-  #timer, #attempts {
-    font-size: 1.5rem;
-  }
-}
-
-/* Resultado visual */
-.result-box {
-  margin-top: 1rem;
-  padding: 0.75rem;
-  border-radius: 8px;
-  background: var(--bg-hover);
-  display: none;
-}
-.result-box.visible {
-  display: block;
-}
-.challenge-correct {
-  border-left: 4px solid var(--success);
-  background: var(--success-bg, #e6f4ea);
-}
-.challenge-wrong {
-  border-left: 4px solid var(--danger);
-  background: var(--danger-bg, #feeceb);
-}
-.result-label {
-  font-weight: bold;
-  margin-bottom: 0.5rem;
-}
-
-/* Tabela de histórico responsiva */
-#challenge-table {
-  width: 100%;
-  overflow-x: auto;
-  margin-bottom: 1rem;
-}
-#challenge-table table {
-  min-width: 600px;
-  font-size: 0.8rem;
-}/* Reset de box-sizing global (Início CSS) */
-*, *::before, *::after {
-  box-sizing: border-box;
-}
-
-/* Garante que o corpo da página não force largura extra */
-body {
-  overflow-x: hidden;
-  max-width: 100vw;
-}
-
-/* Seção de validação – responsiva */
-#section-validate {
-  width: 100%;
-  padding: 0 1rem;
-}
-
-#section-validate .panel {
-  max-width: 1000px;
-  width: 100%;
-  margin: 0 auto;
-  padding: 1rem;
-  background: var(--bg-surface);
-  border-radius: 1rem;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  overflow-x: auto; /* previne vazamento lateral interno */
-}
-
-/* Agrupamento de campos – grid responsivo */
-#section-validate .field-group {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 1.5rem;
-  align-items: end;
-}
-
-/* Para o container do cronômetro e tentativas */
-#section-validate .field-group > div:last-child {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 1.5rem;
-  align-items: center;
-}
-
-#timer, #attempts {
-  font-family: var(--font-mono);
-  font-size: 1.8rem;
-  white-space: nowrap;
-}
-
-/* Ajuste do botão e texto de instrução */
-#section-validate .field-group > div:first-child {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-/* Área do desafio – inputs lado a lado em grid */
-#challenge-area .field-group {
-  grid-template-columns: 1fr 1fr;
-}
-
-/* Em telas menores que 600px */
-@media (max-width: 600px) {
-  #challenge-area .field-group,
-  #section-validate .field-group {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-  
-  #timer, #attempts {
-    font-size: 1.5rem;
-  }
-}
-
-/* Resultado visual */
-.result-box {
-  margin-top: 1rem;
-  padding: 0.75rem;
-  border-radius: 8px;
-  background: var(--bg-hover);
-  display: none;
-}
-.result-box.visible {
-  display: block;
-}
-.challenge-correct {
-  border-left: 4px solid var(--success);
-  background: var(--success-bg, #e6f4ea);
-}
-.challenge-wrong {
-  border-left: 4px solid var(--danger);
-  background: var(--danger-bg, #feeceb);
-}
-.result-label {
-  font-weight: bold;
-  margin-bottom: 0.5rem;
-}
-
-/* Tabela de histórico responsiva */
-#challenge-table {
-  width: 100%;
-  overflow-x: auto;
-  margin-bottom: 1rem;
-}
-#challenge-table table {
-  min-width: 600px;
-  font-size: 0.8rem;
-}
-
-/* ─────────────── MODAL DE BOAS-VINDAS ─────────────── */
-.welcome-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 10000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-body);
-}
-
-.welcome-modal-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(4px);
-  animation: fadeInOverlay 0.3s ease;
-}
-
-@keyframes fadeInOverlay {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-.welcome-modal-container {
-  position: relative;
-  background: var(--bg-surface);
-  color: var(--text-primary);
-  width: min(90%, 550px);
-  max-height: 85vh;
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-lg);
-  overflow-y: auto;
-  z-index: 10001;
-  animation: slideUpModal 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-  border: 1px solid var(--border-light);
-}
-
-@keyframes slideUpModal {
-  from {
-    opacity: 0;
-    transform: translateY(40px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.welcome-modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.25rem 1.5rem;
-  border-bottom: 1px solid var(--border-light);
-  background: var(--color-primary);
-  color: #fff;
-  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-}
-
-.welcome-modal-header h2 {
   margin: 0;
-  font-size: 1.35rem;
-  font-family: var(--font-heading);
-  font-weight: 600;
-  letter-spacing: -0.3px;
-}
-
-.welcome-modal-close {
-  background: none;
-  border: none;
-  font-size: 1.8rem;
-  line-height: 1;
-  cursor: pointer;
-  color: rgba(255,255,255,0.8);
-  transition: color 0.2s;
   padding: 0;
-  margin: 0;
 }
 
-.welcome-modal-close:hover {
-  color: #fff;
-}
-
-.welcome-modal-body {
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.welcome-changelog h3,
-.welcome-guidelines h3 {
-  font-size: 1rem;
-  margin-bottom: 0.75rem;
-  color: var(--color-primary);
-  letter-spacing: 0.3px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.welcome-changelog ul,
-.welcome-guidelines ul {
-  margin: 0;
-  padding-left: 1.25rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.welcome-changelog li,
-.welcome-guidelines li {
-  font-size: 0.85rem;
-  line-height: 1.5;
-  color: var(--text-secondary);
-}
-
-.welcome-modal-footer {
-  padding: 1rem 1.5rem 1.5rem;
-  border-top: 1px solid var(--border-light);
-  background: var(--bg-surface);
-  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
-}
-
-.welcome-agree-btn {
-  width: 100%;
-  background: var(--color-primary);
-  color: #fff;
-  border: none;
-  border-radius: var(--radius-md);
-  padding: 12px;
-  font-size: 0.9rem;
-  font-weight: 600;
+/* Garante que o corpo da página não force largura extra */
+body {
+  overflow-x: hidden;
+  max-width: 100vw;
+  background: var(--bg-page);
+  color: var(--text-primary);
   font-family: var(--font-body);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: var(--shadow-sm);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.3s, color 0.3s;
 }
 
-.welcome-agree-btn:hover {
-  background: var(--color-primary-dark);
-  transform: scale(0.98);
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
 }
-
-/* Responsivo */
-@media (max-width: 550px) {
-  .welcome-modal-container {
-    width: 95%;
-  }
-  .welcome-modal-header h2 {
-    font-size: 1.1rem;
-  }
-  .welcome-modal-body {
-    padding: 1rem;
-  }
-}
-
-
-
-
-
-
 
 /* ─────────────── 2. MODO ESCURO (PALETA COMPLETAMENTE AJUSTADA) ─────────────── */
 body.dark {
@@ -464,7 +94,6 @@ body.dark {
   --text-secondary: #cbd5e1;
   --text-muted: #94a3b8;
 
-  /* Cores primárias agora em tons claros para contraste no fundo escuro */
   --color-primary: #60a5fa;
   --color-primary-dark: #3b82f6;
   --color-primary-light: #93c5fd;
@@ -478,34 +107,13 @@ body.dark {
   --sidebar-bg: rgba(15, 23, 42, 0.95);
 }
 
-/* ─────────────── 3. RESET & BASE ─────────────── */
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-html {
-  font-size: 16px;
-  scroll-behavior: smooth;
-}
-body {
-  background: var(--bg-page);
-  color: var(--text-primary);
-  font-family: var(--font-body);
-  font-size: 0.875rem;
-  line-height: 1.6;
-  min-height: 100vh;
-  -webkit-font-smoothing: antialiased;
-  transition: background-color 0.3s, color 0.3s;
-}
-
-/* ─────────────── 4. LAYOUT PRINCIPAL ─────────────── */
+/* ─────────────── 3. LAYOUT PRINCIPAL ─────────────── */
 .app-container {
   display: flex;
   min-height: 100vh;
 }
 
-/* ─────────────── 5. SIDEBAR ─────────────── */
+/* ─────────────── 4. SIDEBAR ─────────────── */
 .sidebar {
   width: var(--sidebar-width);
   background: var(--sidebar-bg);
@@ -594,7 +202,7 @@ body {
   color: #fff;
 }
 
-/* ─────────────── 6. CONTEÚDO PRINCIPAL ─────────────── */
+/* ─────────────── 5. CONTEÚDO PRINCIPAL ─────────────── */
 .main-content {
   flex: 1;
   margin-left: var(--sidebar-width);
@@ -609,7 +217,7 @@ body {
   display: block;
 }
 
-/* ─────────────── 7. CORREÇÃO: REMOVER AZUL DOS MINI CABEÇALHOS NO MODO ESCURO ─────────────── */
+/* ─────────────── 6. CORREÇÃO: REMOVER AZUL DOS MINI CABEÇALHOS NO MODO ESCURO ─────────────── */
 body.dark h3,
 body.dark h4,
 body.dark h5,
@@ -622,7 +230,7 @@ body.dark .state-name {
   color: var(--text-primary) !important;
 }
 
-/* ─────────────── 8. TOGGLE MOBILE ─────────────── */
+/* ─────────────── 7. TOGGLE MOBILE ─────────────── */
 .sidebar-toggle {
   display: none;
   position: fixed;
@@ -655,7 +263,7 @@ body.dark .state-name {
   }
 }
 
-/* ─────────────── 9. WRAPPER & HEADER ─────────────── */
+/* ─────────────── 8. WRAPPER & HEADER ─────────────── */
 .wrapper {
   max-width: 1200px;
   margin: 0 auto;
@@ -710,22 +318,17 @@ header {
   font-weight: 400;
 }
 
-/* Header direito: agora com flex row e alinhamento melhor */
 .header-right {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 10px;
 }
-.header-right > * {
-  white-space: nowrap;
-}
 #clock {
   font-size: 0.75rem;
   color: var(--text-muted);
   font-weight: 500;
   letter-spacing: 0.5px;
-  margin-right: auto; /* empurra os itens seguintes para a direita em telas maiores */
 }
 .state-counter {
   font-size: 0.75rem;
@@ -737,41 +340,22 @@ header {
   border: 1px solid var(--border-light);
 }
 
-/* ─────────────── 10. TABS ─────────────── */
-/* ═══════════════════════════════════════════════════════════════
-   PAINÉIS DE CONTEÚDO DAS ABAS (tab-panel)
-   ═══════════════════════════════════════════════════════════════ */
+/* ─────────────── 9. TABS ─────────────── */
 .tab-panel {
   display: none;
   animation: fadeSlideOut 0.2s ease forwards;
 }
-
 .tab-panel.active {
   display: block;
   animation: fadeSlideIn 0.25s ease forwards;
 }
-
-/* Animações usadas pelas abas */
 @keyframes fadeSlideIn {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
 }
-
 @keyframes fadeSlideOut {
-  from {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  to {
-    opacity: 0;
-    transform: translateY(-8px);
-  }
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(-8px); }
 }
 .tabs {
   display: flex;
@@ -808,7 +392,7 @@ header {
   color: var(--text-primary);
 }
 
-/* ─────────────── 11. GRID & PAINÉIS ─────────────── */
+/* ─────────────── 10. GRID & PAINÉIS ─────────────── */
 .grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -842,8 +426,6 @@ header {
   border-bottom: 1px solid var(--border-light);
   padding-bottom: 12px;
 }
-
-/* Indicadores coloridos */
 .dot {
   width: 10px;
   height: 10px;
@@ -851,32 +433,19 @@ header {
   flex-shrink: 0;
   display: inline-block;
 }
-.dot-blue {
-  background: var(--info);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25);
-}
-.dot-green {
-  background: var(--success);
-  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.25);
-}
-.dot-cyan {
-  background: var(--color-secondary-light);
-  box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.25);
-}
+.dot-blue { background: var(--info); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25); }
+.dot-green { background: var(--success); box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.25); }
+.dot-cyan { background: var(--color-secondary-light); box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.25); }
 
-/* ─────────────── 12. FORMULÁRIOS ─────────────── */
+/* ─────────────── 11. FORMULÁRIOS ─────────────── */
 .field-group {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
   margin-bottom: 12px;
 }
-.field-group.full {
-  grid-template-columns: 1fr;
-}
-.field-group.triple {
-  grid-template-columns: 1fr 1fr 1fr;
-}
+.field-group.full { grid-template-columns: 1fr; }
+.field-group.triple { grid-template-columns: 1fr 1fr 1fr; }
 label {
   display: block;
   font-size: 0.7rem;
@@ -886,14 +455,8 @@ label {
   margin-bottom: 6px;
   text-transform: uppercase;
 }
-label.highlight {
-  color: var(--info);
-  font-weight: 700;
-}
-label.cyan {
-  color: var(--color-secondary);
-  font-weight: 600;
-}
+label.highlight { color: var(--info); font-weight: 700; }
+label.cyan { color: var(--color-secondary); font-weight: 600; }
 
 input[type="number"],
 input[type="text"],
@@ -910,10 +473,6 @@ select {
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background-color 0.3s;
   -moz-appearance: textfield;
 }
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-}
 input:focus, select:focus {
   border-color: var(--border-focus);
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
@@ -922,10 +481,6 @@ input.target {
   border-color: var(--info);
   background: var(--info-bg);
 }
-input.target:focus {
-  border-color: var(--border-focus);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25);
-}
 select {
   cursor: pointer;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M6 8L1 3h10z' fill='%2364748b'/%3E%3C/svg%3E");
@@ -933,9 +488,7 @@ select {
   background-position: right 12px center;
   padding-right: 32px;
   appearance: none;
-  -webkit-appearance: none;
 }
-
 .divider-label {
   font-size: 0.65rem;
   color: var(--text-muted);
@@ -948,7 +501,7 @@ select {
   font-weight: 600;
 }
 
-/* ─────────────── 13. BOTÕES ─────────────── */
+/* ─────────────── 12. BOTÕES ─────────────── */
 .btn {
   width: 100%;
   border: none;
@@ -967,9 +520,7 @@ select {
   justify-content: center;
   gap: 6px;
 }
-.btn:active {
-  transform: scale(0.98);
-}
+.btn:active { transform: scale(0.98); }
 .btn-primary {
   background: var(--color-primary);
   color: var(--text-on-primary);
@@ -1007,10 +558,9 @@ select {
   margin-top: 0;
   font-size: 0.6875rem;
   padding: 6px 12px;
-  letter-spacing: 0.5px;
 }
 
-/* ─────────────── 14. RESULTADO ─────────────── */
+/* ─────────────── 13. RESULTADO ─────────────── */
 .result-box {
   display: none;
   margin-top: 18px;
@@ -1068,7 +618,6 @@ select {
   padding-top: 10px;
   margin-top: 8px;
   word-break: break-word;
-  white-space: pre-wrap;
 }
 .save-row {
   display: flex;
@@ -1085,32 +634,22 @@ select {
   padding: 8px 10px;
 }
 
-/* ─────────────── 15. LISTA DE ESTADOS ─────────────── */
+/* ─────────────── 14. LISTA DE ESTADOS ─────────────── */
 .state-scroll {
   max-height: 380px;
   overflow-y: auto;
   padding-right: 6px;
   margin-bottom: 14px;
   scrollbar-width: thin;
-  scrollbar-color: var(--border-medium) transparent;
 }
-.state-scroll::-webkit-scrollbar {
-  width: 5px;
-}
-.state-scroll::-webkit-scrollbar-thumb {
-  background: var(--border-medium);
-  border-radius: 10px;
-}
-.state-scroll::-webkit-scrollbar-track {
-  background: transparent;
-}
+.state-scroll::-webkit-scrollbar { width: 5px; }
+.state-scroll::-webkit-scrollbar-thumb { background: var(--border-medium); border-radius: 10px; }
 .state-empty {
   font-size: 0.8125rem;
   color: var(--text-muted);
   font-style: italic;
   text-align: center;
   padding: 28px 0;
-  opacity: 0.8;
 }
 .state-card {
   background: var(--bg-surface);
@@ -1121,11 +660,8 @@ select {
   margin-bottom: 10px;
   animation: fadeIn 0.2s ease;
   box-shadow: var(--shadow-sm);
-  transition: box-shadow var(--transition-fast);
 }
-.state-card:hover {
-  box-shadow: var(--shadow-md);
-}
+.state-card:hover { box-shadow: var(--shadow-md); }
 .state-card-header {
   display: flex;
   justify-content: space-between;
@@ -1152,20 +688,14 @@ select {
   margin-top: 6px;
   line-height: 1.5;
 }
-.state-values b {
-  color: var(--success);
-  font-weight: 700;
-}
+.state-values b { color: var(--success); font-weight: 700; }
 .state-meta {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-top: 8px;
 }
-.state-time {
-  font-size: 0.7rem;
-  color: var(--text-muted);
-}
+.state-time { font-size: 0.7rem; color: var(--text-muted); }
 .delete-btn {
   background: none;
   border: none;
@@ -1173,28 +703,20 @@ select {
   cursor: pointer;
   font-size: 1.1rem;
   padding: 2px 6px;
-  line-height: 1;
   transition: color var(--transition-fast);
-  border-radius: 4px;
 }
-.delete-btn:hover {
-  color: var(--danger);
-  background: var(--danger-bg);
-}
+.delete-btn:hover { color: var(--danger); background: var(--danger-bg); }
 
-/* ─────────────── 16. EXPORTAÇÃO ─────────────── */
+/* ─────────────── 15. EXPORTAÇÃO ─────────────── */
 .export-row {
   display: grid;
   grid-template-columns: auto 1fr 1fr;
   gap: 10px;
   align-items: center;
 }
-.export-row select {
-  margin-top: 0;
-  height: 100%;
-}
+.export-row select { margin-top: 0; height: 100%; }
 
-/* ─────────────── 17. CORNER GRID (BILINEAR) ─────────────── */
+/* ─────────────── 16. CORNER GRID (BILINEAR) ─────────────── */
 .corner-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -1215,7 +737,7 @@ select {
   font-weight: 700;
 }
 
-/* ─────────────── 18. TOAST ─────────────── */
+/* ─────────────── 17. TOAST ─────────────── */
 .toast {
   position: fixed;
   bottom: 32px;
@@ -1234,14 +756,10 @@ select {
   pointer-events: none;
   box-shadow: 0 8px 20px rgba(0,0,0,0.25);
 }
-.toast.show {
-  transform: translateX(-50%) translateY(0);
-}
-.toast.error {
-  background: var(--danger);
-}
+.toast.show { transform: translateX(-50%) translateY(0); }
+.toast.error { background: var(--danger); }
 
-/* ─────────────── 19. CONTROLES (IDIOMA / TEMA) ─────────────── */
+/* ─────────────── 18. CONTROLES (IDIOMA / TEMA) ─────────────── */
 .language-select {
   background: var(--bg-input);
   border: 1px solid var(--border-medium);
@@ -1258,13 +776,10 @@ select {
   font-size: 1.2rem;
   cursor: pointer;
   padding: 4px;
-  transition: color var(--transition-fast);
 }
-.dark-mode-toggle:hover {
-  color: var(--text-primary);
-}
+.dark-mode-toggle:hover { color: var(--text-primary); }
 
-/* ─────────────── 20. MODAL DE GRÁFICO ─────────────── */
+/* ─────────────── 19. MODAL DE GRÁFICO ─────────────── */
 .graph-modal {
   display: none;
   position: fixed;
@@ -1278,11 +793,7 @@ select {
   justify-content: center;
   overflow: hidden;
 }
-
-.graph-modal.open {
-  display: flex;
-}
-
+.graph-modal.open { display: flex; }
 .graph-modal-content {
   background: var(--bg-surface);
   border-radius: var(--radius-lg);
@@ -1295,14 +806,12 @@ select {
   box-shadow: var(--shadow-lg);
   overflow: hidden;
 }
-
 .graph-modal-content h3 {
   margin-bottom: 16px;
   font-family: var(--font-heading);
   color: var(--color-primary);
   flex-shrink: 0;
 }
-
 .close-modal {
   position: absolute;
   top: 12px;
@@ -1319,11 +828,7 @@ select {
   align-items: center;
   justify-content: center;
 }
-
-.close-modal:hover {
-  color: var(--danger);
-}
-
+.close-modal:hover { color: var(--danger); }
 #graph-canvas {
   width: 100% !important;
   height: 100% !important;
@@ -1331,32 +836,18 @@ select {
   background: var(--bg-surface);
   border-radius: var(--radius-sm);
 }
-
-.js-plotly-plot,
-.plotly-container {
+.js-plotly-plot, .plotly-container {
   width: 100% !important;
   height: 100% !important;
   max-height: 100%;
   overflow: hidden !important;
 }
-
-#graph-canvas,
-#plotly-container {
-  width: 100% !important;
-  height: 100% !important;
-  max-height: calc(100% - 40px);
-  border-radius: var(--radius-sm);
-  background: var(--bg-surface);
-}
-
 #plotly-container {
   overflow: hidden;
 }
 
-/* ─────────────── 21. SEÇÕES ESPECIAIS (DOCS, TEAM, DONATE) ─────────────── */
-.docs-content {
-  max-width: 800px;
-}
+/* ─────────────── 20. SEÇÕES ESPECIAIS (DOCS, TEAM, DONATE) ─────────────── */
+.docs-content { max-width: 800px; }
 .docs-content h3 {
   font-family: var(--font-heading);
   color: var(--color-primary);
@@ -1377,10 +868,7 @@ select {
   padding: 14px 0;
   border-bottom: 1px solid var(--border-light);
 }
-.team-card i {
-  font-size: 2rem;
-  color: var(--color-primary);
-}
+.team-card i { font-size: 2rem; color: var(--color-primary); }
 .donate-options {
   display: flex;
   gap: 16px;
@@ -1402,17 +890,230 @@ select {
   margin-bottom: 10px;
 }
 
-/* ─────────────── 22. ANIMAÇÕES ─────────────── */
+/* ─────────────── 21. ANIMAÇÕES ─────────────── */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(-6px); }
   to { opacity: 1; transform: translateY(0); }
 }
-@keyframes fadeSlideIn {
-  from { opacity: 0; transform: translateY(-6px); }
+
+/* ─────────────── 22. MODAL DE BOAS-VINDAS ─────────────── */
+.welcome-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-body);
+}
+.welcome-modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  animation: fadeInOverlay 0.3s ease;
+}
+@keyframes fadeInOverlay {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.welcome-modal-container {
+  position: relative;
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  width: min(90%, 550px);
+  max-height: 85vh;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  overflow-y: auto;
+  z-index: 10001;
+  animation: slideUpModal 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+  border: 1px solid var(--border-light);
+}
+@keyframes slideUpModal {
+  from { opacity: 0; transform: translateY(40px); }
   to { opacity: 1; transform: translateY(0); }
 }
+.welcome-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border-light);
+  background: var(--color-primary);
+  color: #fff;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+.welcome-modal-header h2 {
+  margin: 0;
+  font-size: 1.35rem;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  letter-spacing: -0.3px;
+}
+.welcome-modal-close {
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  line-height: 1;
+  cursor: pointer;
+  color: rgba(255,255,255,0.8);
+  transition: color 0.2s;
+}
+.welcome-modal-close:hover { color: #fff; }
+.welcome-modal-body {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.welcome-changelog h3, .welcome-guidelines h3 {
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
+  color: var(--color-primary);
+  letter-spacing: 0.3px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.welcome-changelog ul, .welcome-guidelines ul {
+  margin: 0;
+  padding-left: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.welcome-changelog li, .welcome-guidelines li {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+.welcome-modal-footer {
+  padding: 1rem 1.5rem 1.5rem;
+  border-top: 1px solid var(--border-light);
+  background: var(--bg-surface);
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+}
+.welcome-agree-btn {
+  width: 100%;
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-family: var(--font-body);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-sm);
+}
+.welcome-agree-btn:hover {
+  background: var(--color-primary-dark);
+  transform: scale(0.98);
+}
 
-/* ─────────────── 23. RESPONSIVO ─────────────── */
+/* ─────────────── 23. SEÇÃO VALIDAÇÃO – CENTRALIZADA ─────────────── */
+#section-validate {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 0;
+}
+#section-validate .wrapper {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+#section-validate .panel {
+  max-width: 1000px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 1rem;
+  background: var(--bg-surface);
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  overflow-x: auto;
+}
+#section-validate .field-group {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  align-items: end;
+}
+#section-validate .field-group > div:last-child {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  align-items: center;
+}
+#timer, #attempts {
+  font-family: var(--font-mono);
+  font-size: 1.8rem;
+  white-space: nowrap;
+}
+#section-validate .field-group > div:first-child {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+#challenge-area .field-group {
+  grid-template-columns: 1fr 1fr;
+}
+@media (max-width: 600px) {
+  #challenge-area .field-group,
+  #section-validate .field-group {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  #timer, #attempts {
+    font-size: 1.5rem;
+  }
+}
+.result-box {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  border-radius: 8px;
+  background: var(--bg-hover);
+  display: none;
+}
+.result-box.visible {
+  display: block;
+}
+.challenge-correct {
+  border-left: 4px solid var(--success);
+  background: var(--success-bg, #e6f4ea);
+}
+.challenge-wrong {
+  border-left: 4px solid var(--danger);
+  background: var(--danger-bg, #feeceb);
+}
+.result-label {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+#challenge-table {
+  width: 100%;
+  overflow-x: auto;
+  margin-bottom: 1rem;
+}
+#challenge-table table {
+  min-width: 600px;
+  font-size: 0.8rem;
+}
+
+/* ─────────────── 24. RESPONSIVO GERAL ─────────────── */
 @media (max-width: 600px) {
   .field-group,
   .field-group.triple {
