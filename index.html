@@ -31,7 +31,6 @@
       </div>
       <nav class="sidebar-nav">
         <button class="sidebar-link active" data-section="home" data-i18n="sidebar.home"><i class="fas fa-home"></i> <span>Início</span></button>
-        <button class="sidebar-link" data-section="validate"><i class="fas fa-flask"></i> <span data-i18n="sidebar.validate">Validação</span></button>
         <button class="sidebar-link" data-section="docs" data-i18n="sidebar.docs"><i class="fas fa-book"></i> <span>Documentação</span></button>
         <button class="sidebar-link" data-section="team" data-i18n="sidebar.team"><i class="fas fa-users"></i> <span>Equipe</span></button>
         <button class="sidebar-link" data-section="support" data-i18n="sidebar.support"><i class="fas fa-life-ring"></i> <span>Suporte</span></button>
@@ -356,87 +355,6 @@
       </section>
     </main>
   </div>
-
-
-
-
-<!-- SEÇÃO VALIDAÇÃO CIENTÍFICA -->
-<section class="content-section" id="section-validate">
-  <div class="wrapper">
-    <div class="panel">
-      <div class="panel-title"><span class="dot dot-blue"></span> Validação Científica — Modo Prova</div>
-
-      <p class="text-muted" style="margin-bottom:20px;">
-        Compare seu desempenho manual com o ThermoLab e meça o erro relativo em relação a dados reais de vapor saturado (Çengel).
-      </p>
-
-      <div class="field-group">
-        <div>
-          <label>Pressione "Iniciar" para começar o desafio</label>
-          <button class="btn btn-primary" id="btn-start-challenge" onclick="startChallenge()">▶ Iniciar Prova</button>
-        </div>
-        <div class="timer-attempts-group">
-          <div style="text-align:center;">
-            <span id="timer">00:00</span><br/>
-            <small class="text-muted">Tempo</small>
-          </div>
-          <div style="text-align:center;">
-            <span id="attempts">0</span><br/>
-            <small class="text-muted">Tentativas</small>
-          </div>
-        </div>
-      </div>
-
-      <!-- O restante do código permanece igual -->
-      <div id="challenge-area" style="display:none;">
-        <!-- ... -->
-      </div>
-      <div id="challenge-history" style="margin-top:30px;">
-        <!-- ... -->
-      </div>
-    </div>
-  </div>
-</section>
-
-      <div id="challenge-area" style="display:none;">
-        <div class="field-group">
-          <div>
-            <label>Pressão alvo (kPa)</label>
-            <input type="number" id="challenge-x" class="target" readonly />
-          </div>
-          <div>
-            <label>Sua resposta (entalpia kJ/kg)</label>
-            <input type="number" id="challenge-user-y" placeholder="Digite seu cálculo manual" />
-          </div>
-        </div>
-        <div class="field-group">
-          <div>
-            <label>Entalpia real (referência)</label>
-            <input type="number" id="challenge-real-y" readonly />
-          </div>
-          <div>
-            <label>Entalpia interpolada (ThermoLab)</label>
-            <input type="number" id="challenge-thermo-y" readonly />
-          </div>
-        </div>
-        <button class="btn btn-primary" onclick="submitChallenge()">Verificar Resposta</button>
-        <div id="challenge-result" class="result-box" style="margin-top:16px;"></div>
-      </div>
-
-      <div id="challenge-history" style="margin-top:30px;">
-        <h3 style="font-family:var(--font-heading); color:var(--color-primary);">Histórico do Desafio</h3>
-        <div id="challenge-table" class="state-scroll" style="max-height:300px;"></div>
-        <button class="btn btn-secondary btn-sm" onclick="exportChallengeCSV()">⬇ Exportar CSV</button>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-  
-
-
-
 
   
 
