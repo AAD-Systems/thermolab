@@ -520,7 +520,7 @@ function esc(str) {
 }
 
 // ────────────────────────────────────────────────────────────────
-// 5. INTERPOLAÇÃO LINEAR (ORIGINAL + MELHORIAS)
+// 5. INTERPOLAÇÃO LINEAR (ORIGINAL + MELHORIAS + ASSISTENTE DIDÁTICO)
 // ────────────────────────────────────────────────────────────────
 let linearResult = null;
 
@@ -562,7 +562,15 @@ function calcLinear() {
   document.getElementById('l-unit-display').textContent = yUnit;
   document.getElementById('l-formula').textContent = formula;
 
-  // Se o gráfico estiver aberto, atualiza automaticamente
+  // --- ASSISTENTE DIDÁTICO ---
+  const feedbackMessages = generateDidacticFeedback('linear', {
+    x1, y1, x2, y2, xT,
+    yResult: round(y),
+    xUnit, yUnit
+  });
+  renderDidacticFeedback(feedbackMessages);
+
+  // Atualiza gráfico se estiver aberto
   if (document.getElementById('graph-modal').classList.contains('open')) {
     showLinearGraph();
   }
@@ -579,7 +587,7 @@ function saveFromLinear() {
 }
 
 // ────────────────────────────────────────────────────────────────
-// 6. INTERPOLAÇÃO BILINEAR (ORIGINAL + MELHORIAS)
+// 6. INTERPOLAÇÃO BILINEAR (ORIGINAL + MELHORIAS + ASSISTENTE DIDÁTICO)
 // ────────────────────────────────────────────────────────────────
 let bilinearResult = null;
 
@@ -638,6 +646,16 @@ function calcBilinear() {
   document.getElementById('b-unit-display').textContent = yUnit;
   document.getElementById('b-formula').textContent = formula;
 
+  // --- ASSISTENTE DIDÁTICO ---
+  const feedbackMessages = generateDidacticFeedback('bilinear', {
+    p1, p2, t1, t2,
+    f11, f12, f21, f22,
+    pT, tT,
+    yResult: round(y),
+    yUnit
+  });
+  renderDidacticFeedback(feedbackMessages);
+
   if (document.getElementById('graph-modal').classList.contains('open')) {
     showBilinearGraph();
   }
@@ -652,6 +670,87 @@ function saveFromBilinear() {
   pushState(name, bilinearResult.xLabel, bilinearResult.yValue, bilinearResult.yUnit, bilinearResult.formula, 'bilinear');
   document.getElementById('b-saveName').value = '';
 }
+
+// ────────────────────────────────────────────────────────────────
+// ASSISTENTE DIDÁTICO – motor de regras (mantenha abaixo)
+// ────────────────────────────────────────────────────────────────
+function generateDidacticFeedback(method, params) {
+  const messages = [];
+
+  if (method === 'linear') {
+    const { x1, y1, x2, y2, xT, yResult, xUnit, yUnit } = params;
+
+    const slope = (y2 - y1) / (x2 - x1);
+    if (slope > 0) {
+      messages.push(`✅ ${yUnit} aumenta com o aumento de ${xUnit} — comportamento fisicamente esperado.`);
+    } else if (slope < 0) {
+      messages.push(`⚠️ ${yUnit} diminui com o aumento de ${xUnit}. Verifique se isso é esperado para esta propriedade.`);
+    } else {
+      messages.push('❌ Declive zero — verifique se os pontos estão corretos; pode indicar erro de digitação.');
+    }
+
+    const range = Math.abs(x2 - x1);
+    const targetDistFromEdge = Math.min(Math.abs(xT - x1), Math.abs(xT - x2));
+    if (range > 1000 && targetDistFromEdge < 0.05 * range) {
+      messages.push('ℹ️ O valor alvo está muito próximo de um dos extremos. Interpolações perto dos extremos são mais confiáveis do que extrapolações, mas é sempre bom verificar.');
+    } else if (range > 500) {
+      messages.push('ℹ️ O intervalo entre X₁ e X₂ é relativamente grande. A interpolação linear assume variação constante, o que pode não ser verdade para gases e vapores.');
+    }
+
+    const bilinearFields = ['b-p1', 'b-p2', 'b-t1', 'b-t2', 'b-f11', 'b-f12', 'b-f21', 'b-f22']
+      .map(id => document.getElementById(id))
+      .filter(el => el && el.value !== '');
+    if (bilinearFields.length >= 3) {
+      messages.push('💡 Dica: você preencheu campos do módulo bilinear. Se sua propriedade depende de duas variáveis (ex.: P e T), experimente usar a aba "Interpolação Dupla".');
+    }
+  } else if (method === 'bilinear') {
+    const { p1, p2, t1, t2, f11, f12, f21, f22, pT, tT, yUnit } = params;
+
+    if (f11 > f21) {
+      messages.push(`✅ Comportamento esperado: entalpia diminui com aumento de pressão (a T constante).`);
+    } else {
+      messages.push(`⚠️ Entalpia aumentou com pressão a T constante — pouco usual para vapor; confira os valores de canto.`);
+    }
+
+    if (f12 > f11 && f22 > f21) {
+      messages.push('✅ Entalpia aumenta com a temperatura, como esperado fisicamente.');
+    } else {
+      messages.push('⚠️ Entalpia não aumenta com temperatura — verifique os valores da tabela.');
+    }
+
+    const pRange = Math.abs(p2 - p1);
+    const tRange = Math.abs(t2 - t1);
+    if (pRange > 1.0 || tRange > 200) {
+      messages.push('ℹ️ O intervalo entre P₁ e P₂ ou T₁ e T₂ é grande. A interpolação bilinear pode apresentar desvios maiores nesses casos.');
+    }
+
+    if (Math.abs(p1 - p2) < 0.01 * p1 || Math.abs(t1 - t2) < 0.01 * t1) {
+      messages.push('💡 Os limites de uma das variáveis são quase iguais — a interpolação linear simples seria suficiente.');
+    }
+  }
+
+  return messages;
+}
+
+function renderDidacticFeedback(messages) {
+  // Busca ou cria o container do feedback didático
+  let fbContainer = document.querySelector('.didactic-feedback');
+  if (!fbContainer) {
+    fbContainer = document.createElement('div');
+    fbContainer.className = 'didactic-feedback';
+    // Insere logo após a fórmula (ou após a save-row, se a fórmula não existir no módulo)
+    const refNode = document.querySelector('.result-formula') || document.querySelector('.save-row');
+    if (refNode) {
+      refNode.parentNode.insertBefore(fbContainer, refNode.nextSibling);
+    }
+  }
+
+  fbContainer.innerHTML = messages.map(m => `<p class="fb-message">${m}</p>`).join('');
+  fbContainer.style.display = messages.length ? 'block' : 'none';
+}
+
+
+
 
 // ────────────────────────────────────────────────────────────────
 // 7. EXPORTAÇÃO (TXT, PDF, DOCX) – ORIGINAL + VERIFICAÇÕES
