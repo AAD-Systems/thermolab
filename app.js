@@ -364,6 +364,178 @@ function updateStateCounterText() {
 
 
 
+// ── DATASET DE REFERÊNCIA (água saturada) ──
+const referenceData = {
+  // Pressão (kPa) : entalpia de vapor saturado (kJ/kg) – dados do Çengel
+  101.325: 2676.0,
+  100: 2675.5,
+  200: 2706.7,
+  300: 2725.3,
+  400: 2738.6,
+  500: 2748.7,
+  600: 2756.8,
+  800: 2769.1,
+  1000: 2778.1,
+  1500: 2792.0,
+  2000: 2798.8,
+  3000: 2804.2,
+  4000: 2801.4,
+  5000: 2792.8
+};
+
+// ── DESAFIO DE VALIDAÇÃO ──
+let challengeStartTime = null;
+let challengeInterval = null;
+let challengeActive = false;
+let challengeAttempts = 0;
+let challengeHistory = [];
+
+function startChallenge() {
+  challengeAttempts = 0;
+  challengeHistory = [];
+  document.getElementById('attempts').textContent = '0';
+  document.getElementById('timer').textContent = '00:00';
+  document.getElementById('challenge-table').innerHTML = '';
+  document.getElementById('btn-start-challenge').disabled = true;
+  
+  // Gera um valor alvo aleatório entre as pressões disponíveis
+  const pressures = Object.keys(referenceData).map(Number).sort((a,b)=>a-b);
+  const pTarget = pressures[Math.floor(Math.random() * pressures.length)];
+  const realEnthalpy = referenceData[pTarget];
+  
+  document.getElementById('challenge-x').value = pTarget;
+  document.getElementById('challenge-real-y').value = realEnthalpy;
+  document.getElementById('challenge-thermo-y').value = '';
+  document.getElementById('challenge-user-y').value = '';
+  document.getElementById('challenge-result').classList.remove('visible');
+  
+  document.getElementById('challenge-area').style.display = 'block';
+  
+  // Inicia cronômetro
+  challengeStartTime = Date.now();
+  challengeActive = true;
+  challengeInterval = setInterval(updateTimer, 1000);
+}
+
+function updateTimer() {
+  const elapsed = Math.floor((Date.now() - challengeStartTime) / 1000);
+  const mins = Math.floor(elapsed / 60).toString().padStart(2,'0');
+  const secs = (elapsed % 60).toString().padStart(2,'0');
+  document.getElementById('timer').textContent = `${mins}:${secs}`;
+}
+
+function submitChallenge() {
+  if (!challengeActive) return;
+  const userY = parseFloat(document.getElementById('challenge-user-y').value);
+  if (isNaN(userY)) {
+    showToast('Digite sua resposta.', 'error');
+    return;
+  }
+  
+  // Calcula via ThermoLab (interpolação linear com pontos vizinhos)
+  const pTarget = parseFloat(document.getElementById('challenge-x').value);
+  const realY = referenceData[pTarget];
+  
+  // Pontos vizinhos para interpolação (simulando o aluno usando a tabela)
+  const pressures = Object.keys(referenceData).map(Number).sort((a,b)=>a-b);
+  let x1, x2, y1, y2;
+  for (let i = 0; i < pressures.length; i++) {
+    if (pressures[i] <= pTarget) {
+      x1 = pressures[i];
+      y1 = referenceData[x1];
+    }
+    if (pressures[i] >= pTarget) {
+      x2 = pressures[i];
+      y2 = referenceData[x2];
+      break;
+    }
+  }
+  if (x1 === x2) {
+    // valor exato na tabela
+    var thermoY = realY;
+  } else {
+    thermoY = y1 + (pTarget - x1) * (y2 - y1) / (x2 - x1);
+  }
+  document.getElementById('challenge-thermo-y').value = thermoY.toFixed(2);
+  
+  const errorRelative = Math.abs(thermoY - realY) / realY * 100;
+  const userError = Math.abs(userY - realY) / realY * 100;
+  
+  challengeAttempts++;
+  document.getElementById('attempts').textContent = challengeAttempts;
+  
+  // Resultado visual
+  const resBox = document.getElementById('challenge-result');
+  const isUserCorrect = userError < 1.0; // tolerância de 1%
+  resBox.classList.add('visible');
+  resBox.classList.remove('challenge-correct', 'challenge-wrong');
+  resBox.classList.add(isUserCorrect ? 'challenge-correct' : 'challenge-wrong');
+  
+  const resLabel = resBox.querySelector('.result-label') || (()=>{
+      const lbl = document.createElement('div'); lbl.className='result-label'; resBox.appendChild(lbl); return lbl;
+  })();
+  const resValue = resBox.querySelector('.result-value') || (()=>{
+      const val = document.createElement('div'); val.className='result-value'; resBox.appendChild(val); return val;
+  })();
+  resLabel.textContent = `Tentativa #${challengeAttempts}`;
+  resValue.innerHTML = `
+    Erro do usuário: <b style="color:${isUserCorrect ? 'var(--success)' : 'var(--danger)'}">${userError.toFixed(2)}%</b><br/>
+    Erro da interpolação: <b style="color:#ffa500">${errorRelative.toFixed(4)}%</b><br/>
+    Tempo gasto: ${document.getElementById('timer').textContent}
+  `;
+  
+  // Salva no histórico
+  challengeHistory.push({
+    attempt: challengeAttempts,
+    pTarget,
+    userY,
+    thermoY: thermoY.toFixed(2),
+    realY,
+    userError: userError.toFixed(2),
+    thermoError: errorRelative.toFixed(4),
+    time: document.getElementById('timer').textContent
+  });
+  renderChallengeHistory();
+  
+  // Reseta para nova tentativa
+  document.getElementById('challenge-user-y').value = '';
+  // Gera novo alvo (opcional: mantém o mesmo para ver melhora? Vou gerar novo)
+  startChallenge(); // reinicia com novo alvo
+}
+
+function renderChallengeHistory() {
+  const tableDiv = document.getElementById('challenge-table');
+  let html = `<div style="overflow-x:auto;">
+    <table style="width:100%; border-collapse: collapse;">
+      <tr><th>#</th><th>P (kPa)</th><th>Usuário</th><th>ThermoLab</th><th>Real</th><th>Erro Usuário</th><th>Erro Interp.</th><th>Tempo</th></tr>`;
+  challengeHistory.forEach(h => {
+    html += `<tr>
+      <td>${h.attempt}</td><td>${h.pTarget}</td><td>${h.userY}</td><td>${h.thermoY}</td><td>${h.realY}</td>
+      <td style="color:${parseFloat(h.userError)>1 ? 'var(--danger)' : 'var(--success)'}">${h.userError}%</td>
+      <td style="color:#ffa500">${h.thermoError}%</td><td>${h.time}</td>
+    </tr>`;
+  });
+  html += '</table></div>';
+  tableDiv.innerHTML = html;
+}
+
+function exportChallengeCSV() {
+  if (!challengeHistory.length) { showToast('Nenhum dado para exportar.', 'error'); return; }
+  const BOM = '\uFEFF';
+  let csv = 'Tentativa,P alvo,Usuário,ThermoLab,Real,Erro Usuário,Erro Interp.,Tempo\n';
+  challengeHistory.forEach(h => {
+    csv += `${h.attempt},${h.pTarget},${h.userY},${h.thermoY},${h.realY},${h.userError},${h.thermoError},${h.time}\n`;
+  });
+  downloadBlob(BOM + csv, 'validacao_thermolab.csv', 'text/csv;charset=utf-8');
+  showToast('CSV exportado.');
+}
+
+// No init(), após os event listeners existentes, adicione:
+document.querySelector('.sidebar-link[data-section="validate"]').addEventListener('click', () => switchSection('validate'));
+
+
+
+
 // ────────────────────────────────────────────────────────────────
 // 2. TEMA ESCURO
 // ────────────────────────────────────────────────────────────────
