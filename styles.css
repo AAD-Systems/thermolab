@@ -54,8 +54,117 @@
 }
 
 
+/* Reset de box-sizing global (Início CSS) */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
 
-/* Reset de box-sizing global (coloque no início do CSS) */
+/* Garante que o corpo da página não force largura extra */
+body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+/* Seção de validação – responsiva */
+#section-validate {
+  width: 100%;
+  padding: 0 1rem;
+}
+
+#section-validate .panel {
+  max-width: 1000px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 1rem;
+  background: var(--bg-surface);
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  overflow-x: auto; /* previne vazamento lateral interno */
+}
+
+/* Agrupamento de campos – grid responsivo */
+#section-validate .field-group {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  align-items: end;
+}
+
+/* Para o container do cronômetro e tentativas */
+#section-validate .field-group > div:last-child {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+#timer, #attempts {
+  font-family: var(--font-mono);
+  font-size: 1.8rem;
+  white-space: nowrap;
+}
+
+/* Ajuste do botão e texto de instrução */
+#section-validate .field-group > div:first-child {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* Área do desafio – inputs lado a lado em grid */
+#challenge-area .field-group {
+  grid-template-columns: 1fr 1fr;
+}
+
+/* Em telas menores que 600px */
+@media (max-width: 600px) {
+  #challenge-area .field-group,
+  #section-validate .field-group {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  #timer, #attempts {
+    font-size: 1.5rem;
+  }
+}
+
+/* Resultado visual */
+.result-box {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  border-radius: 8px;
+  background: var(--bg-hover);
+  display: none;
+}
+.result-box.visible {
+  display: block;
+}
+.challenge-correct {
+  border-left: 4px solid var(--success);
+  background: var(--success-bg, #e6f4ea);
+}
+.challenge-wrong {
+  border-left: 4px solid var(--danger);
+  background: var(--danger-bg, #feeceb);
+}
+.result-label {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+/* Tabela de histórico responsiva */
+#challenge-table {
+  width: 100%;
+  overflow-x: auto;
+  margin-bottom: 1rem;
+}
+#challenge-table table {
+  min-width: 600px;
+  font-size: 0.8rem;
+}/* Reset de box-sizing global (Início CSS) */
 *, *::before, *::after {
   box-sizing: border-box;
 }
