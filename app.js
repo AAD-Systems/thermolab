@@ -9,7 +9,7 @@
 // ────────────────────────────────────────────────────────────────
 const translations = {
   pt: {
-    sidebar: { home: "Início", docs: "Documentação", team: "Equipe", support: "Suporte", donate: "Apoie o Projeto" },
+    sidebar: { home: "Início", docs: "Documentação", team: "Equipe", support: "Suporte", donate: "Apoie o Projeto", validate: "Validação" },
     stateCounter: "{count} estado(s) salvo(s)",
     tabs: { linear: "↗ Interpolação Linear", bilinear: "⊞ Interpolação Dupla", states: "≡ Rastreador" },
     linear: {
@@ -29,7 +29,15 @@ const translations = {
       lastStates: "Últimos Estados",
       noStates: "Nenhum estado ainda.<br/>Calcule e salve →",
       export: "⬇ Exportar",
-      clear: "✕ Limpar tudo"
+      clear: "✕ Limpar tudo",
+      feedback: {
+        monotonicUp: "{yUnit} aumenta com o aumento de {xUnit} — comportamento fisicamente esperado.",
+        monotonicDown: "{yUnit} diminui com o aumento de {xUnit}. Verifique se isso é esperado para esta propriedade.",
+        zeroSlope: "Declive zero — verifique se os pontos estão corretos; pode indicar erro de digitação.",
+        nearExtremity: "O valor alvo está muito próximo de um dos extremos. Interpolações perto dos extremos são mais confiáveis do que extrapolações, mas é sempre bom verificar.",
+        wideInterval: "O intervalo entre X₁ e X₂ é relativamente grande. A interpolação linear assume variação constante, o que pode não ser verdade para gases e vapores.",
+        bilinearHint: "💡 Dica: você preencheu campos do módulo bilinear. Se sua propriedade depende de duas variáveis (ex.: P e T), experimente usar a aba \"Interpolação Dupla\"."
+      }
     },
     bilinear: {
       title: "Interpolação Dupla (Bilinear)",
@@ -60,7 +68,15 @@ const translations = {
       step4: "Informe P=1.2, T=250 como alvos",
       step5: "Clique Calcular",
       stepsDesc: "A interpolação bilinear faz:<br/>1. Interpola em T para P₁ → R₁<br/>2. Interpola em T para P₂ → R₂<br/>3. Interpola em P entre R₁ e R₂",
-      noStates: "Estados salvos aparecem aqui"
+      noStates: "Estados salvos aparecem aqui",
+      feedback: {
+        enthalpyPressure: "✅ Comportamento esperado: entalpia diminui com aumento de pressão (a T constante).",
+        enthalpyTemp: "✅ Entalpia aumenta com a temperatura, como esperado fisicamente.",
+        enthalpyWarning: "⚠️ Entalpia aumentou com pressão a T constante — pouco usual para vapor; confira os valores de canto.",
+        tempWarning: "⚠️ Entalpia não aumenta com temperatura — verifique os valores da tabela.",
+        wideRange: "ℹ️ O intervalo entre P₁ e P₂ ou T₁ e T₂ é grande. A interpolação bilinear pode apresentar desvios maiores nesses casos.",
+        linearSufficient: "💡 Os limites de uma das variáveis são quase iguais — a interpolação linear simples seria suficiente."
+      }
     },
     states: {
       title: "Rastreador de Estados — Sessão Completa",
@@ -101,7 +117,7 @@ const translations = {
     }
   },
   en: {
-    sidebar: { home: "Home", docs: "Documentation", team: "Team", support: "Support", donate: "Support Us" },
+    sidebar: { home: "Home", docs: "Documentation", team: "Team", support: "Support", donate: "Support Us", validate: "Validation" },
     stateCounter: "{count} saved state(s)",
     tabs: { linear: "↗ Linear Interpolation", bilinear: "⊞ Bilinear Interpolation", states: "≡ Tracker" },
     linear: {
@@ -121,7 +137,15 @@ const translations = {
       lastStates: "Last States",
       noStates: "No states yet.<br/>Calculate and save →",
       export: "⬇ Export",
-      clear: "✕ Clear all"
+      clear: "✕ Clear all",
+      feedback: {
+        monotonicUp: "{yUnit} increases with {xUnit} — physically expected behavior.",
+        monotonicDown: "{yUnit} decreases with {xUnit}. Check if this is expected for this property.",
+        zeroSlope: "Zero slope — check if data points are correct; may indicate a typo.",
+        nearExtremity: "The target value is very close to one of the edges. Interpolations near edges are reliable, but extrapolation should be avoided.",
+        wideInterval: "The interval between X₁ and X₂ is relatively large. Linear interpolation assumes constant variation, which may not hold for gases and vapors.",
+        bilinearHint: "💡 Tip: You have partially filled the bilinear module. If your property depends on two variables (e.g., P and T), try the \"Bilinear Interpolation\" tab."
+      }
     },
     bilinear: {
       title: "Bilinear Interpolation",
@@ -152,7 +176,15 @@ const translations = {
       step4: "Enter P=1.2, T=250 as targets",
       step5: "Click Calculate",
       stepsDesc: "Bilinear interpolation steps:<br/>1. Interpolate in T for P₁ → R₁<br/>2. Interpolate in T for P₂ → R₂<br/>3. Interpolate in P between R₁ and R₂",
-      noStates: "Saved states appear here"
+      noStates: "Saved states appear here",
+      feedback: {
+        enthalpyPressure: "✅ Expected behavior: enthalpy decreases as pressure increases (at constant T).",
+        enthalpyTemp: "✅ Enthalpy increases with temperature, as physically expected.",
+        enthalpyWarning: "⚠️ Enthalpy increased with pressure at constant T — unusual for steam; check the corner values.",
+        tempWarning: "⚠️ Enthalpy does not increase with temperature — verify the table data.",
+        wideRange: "ℹ️ The interval between P₁ and P₂ or T₁ and T₂ is large. Bilinear interpolation may show larger deviations.",
+        linearSufficient: "💡 The limits of one variable are almost equal — simple linear interpolation would be sufficient."
+      }
     },
     states: {
       title: "State Tracker — Full Session",
@@ -176,7 +208,7 @@ const translations = {
     },
     team: {
       title: "AAD-Systems Team",
-      credits: "This project started as an academic and evolving into a reference open source tool for students and engineers."
+      credits: "This project started as an academic work and evolved into a reference open source tool for students and engineers."
     },
     support: {
       title: "Support & Feedback",
@@ -193,7 +225,7 @@ const translations = {
     }
   },
   zh: {
-    sidebar: { home: "首页", docs: "文档", team: "团队", support: "支持", donate: "支持我们" },
+    sidebar: { home: "首页", docs: "文档", team: "团队", support: "支持", donate: "支持我们", validate: "验证" },
     stateCounter: "{count} 个保存的状态",
     tabs: { linear: "↗ 线性插值", bilinear: "⊞ 双线性插值", states: "≡ 追踪器" },
     linear: {
@@ -213,7 +245,15 @@ const translations = {
       lastStates: "最近状态",
       noStates: "暂无状态。<br/>请计算并保存 →",
       export: "⬇ 导出",
-      clear: "✕ 全部清除"
+      clear: "✕ 全部清除",
+      feedback: {
+        monotonicUp: "{yUnit} 随 {xUnit} 增加而增加 — 物理行为符合预期。",
+        monotonicDown: "{yUnit} 随 {xUnit} 增加而减少。请确认该属性是否如此。",
+        zeroSlope: "斜率为零 — 检查数据点是否正确；可能输入有误。",
+        nearExtremity: "目标值非常接近一个端点。端点附近的插值可靠，但应避免外推。",
+        wideInterval: "X₁ 和 X₂ 之间的间隔较大。线性插值假设变化恒定，这可能不适用于气体和蒸汽。",
+        bilinearHint: "💡 提示：您已部分填写双线性模块。如果属性依赖两个变量（例如 P 和 T），请尝试“双线性插值”选项卡。"
+      }
     },
     bilinear: {
       title: "双线性插值",
@@ -244,7 +284,15 @@ const translations = {
       step4: "输入目标 P=1.2，T=250",
       step5: "点击计算",
       stepsDesc: "双线性插值步骤：<br/>1. 对 P₁ 进行 T 插值 → R₁<br/>2. 对 P₂ 进行 T 插值 → R₂<br/>3. 在 P 方向上于 R₁ 与 R₂ 之间插值",
-      noStates: "此处显示已保存的状态"
+      noStates: "此处显示已保存的状态",
+      feedback: {
+        enthalpyPressure: "✅ 预期行为：焓随压力增加而减少（恒温下）。",
+        enthalpyTemp: "✅ 焓随温度增加而增加，符合物理预期。",
+        enthalpyWarning: "⚠️ 恒温下焓随压力增加而增加 — 对蒸汽而言不寻常；请检查角点值。",
+        tempWarning: "⚠️ 焓未随温度增加而增加 — 请核对表格数据。",
+        wideRange: "ℹ️ P₁ 与 P₂ 或 T₁ 与 T₂ 的间隔较大。双线性插值可能产生较大偏差。",
+        linearSufficient: "💡 某一变量的界限几乎相等 — 简单的线性插值已足够。"
+      }
     },
     states: {
       title: "状态追踪器 — 完整会话",
@@ -268,7 +316,7 @@ const translations = {
     },
     team: {
       title: "AAD-Systems 团队",
-      credits: "该项目起源于 指导的一项学术作业，现已发展成为面向学生和工程师的参考开源工具。"
+      credits: "该项目起源于指导的一项学术作业，现已发展成为面向学生和工程师的参考开源工具。"
     },
     support: {
       title: "支持与反馈",
