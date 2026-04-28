@@ -9,7 +9,7 @@
 // ────────────────────────────────────────────────────────────────
 const translations = {
   pt: {
-    sidebar: { home: "Início", docs: "Documentação", team: "Equipe", support: "Suporte", donate: "Apoie o Projeto" },
+    sidebar: { home: "Início", docs: "Documentação", team: "Equipe", support: "Suporte", donate: "Apoie o Projeto", validate: "Validação" },
     stateCounter: "{count} estado(s) salvo(s)",
     tabs: { linear: "↗ Interpolação Linear", bilinear: "⊞ Interpolação Dupla", states: "≡ Rastreador" },
     linear: {
@@ -101,7 +101,7 @@ const translations = {
     }
   },
   en: {
-    sidebar: { home: "Home", docs: "Documentation", team: "Team", support: "Support", donate: "Support Us" },
+    sidebar: { home: "Home", docs: "Documentation", team: "Team", support: "Support", donate: "Support Us", validate: "Validation"},
     stateCounter: "{count} saved state(s)",
     tabs: { linear: "↗ Linear Interpolation", bilinear: "⊞ Bilinear Interpolation", states: "≡ Tracker" },
     linear: {
@@ -193,7 +193,7 @@ const translations = {
     }
   },
   zh: {
-    sidebar: { home: "首页", docs: "文档", team: "团队", support: "支持", donate: "支持我们" },
+    sidebar: { home: "首页", docs: "文档", team: "团队", support: "支持", donate: "支持我们", validate: "验证"},
     stateCounter: "{count} 个保存的状态",
     tabs: { linear: "↗ 线性插值", bilinear: "⊞ 双线性插值", states: "≡ 追踪器" },
     linear: {
