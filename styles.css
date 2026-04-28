@@ -56,12 +56,31 @@
 
 
 /* ── SEÇÃO VALIDAÇÃO ── */
-#timer, #attempts {
-  font-family: var(--font-mono);
+#section-validate .panel {
+  max-width: 800px;
+  margin: 0 auto;
 }
+
+#timer,
+#attempts {
+  font-family: var(--font-mono);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+/* Container dos indicadores (tempo e tentativas) */
+#section-validate .field-group > div:last-child {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  align-items: center;
+}
+
 #challenge-user-y {
   border: 2px solid var(--info);
 }
+
 #challenge-real-y {
   background: var(--bg-hover);
   color: var(--text-muted);
@@ -71,9 +90,29 @@
   border-left: 4px solid var(--success) !important;
   background: var(--success-bg) !important;
 }
+
 .challenge-wrong {
   border-left: 4px solid var(--danger) !important;
   background: var(--danger-bg) !important;
+}
+
+/* Histórico tabela */
+#challenge-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+}
+
+#challenge-table th,
+#challenge-table td {
+  border: 1px solid var(--border-light);
+  padding: 6px 8px;
+  text-align: center;
+}
+
+#challenge-table th {
+  background: var(--bg-hover);
+  color: var(--text-primary);
 }
                                 
 
